@@ -24,12 +24,12 @@ cxr14_annotations = cxr14_annotations[cxr14_annotations["Image Index"].isin(test
 # neatx_annotations = pd.read_csv(f"{args.raw_data_folder}/CXR14/NIH-CX14_TubeAnnotations_NonExperts_aggregated.csv")
 # kept_imgs = neatx_annotations[neatx_annotations["Image Index"].isin(test_imgs_ids)]
 
-processed_annotation = pd.merge(cxr14_annotations,kept_imgs,on=["Image Index"],how="left")
-processed_annotation["Drain"] = processed_annotation["Drain"].fillna(-1)
-processed_annotation["Pneumothorax"] = processed_annotation["Finding Labels"].apply(lambda x:"Pneumothorax" in x)
-processed_annotation.to_csv(f"{args.processed_data_folder}/CXR14/processed_labels.csv")
-for img_id in kept_imgs["Image Index"]:
-    img = cv2.imread(f"{args.raw_data_folder}/CXR14/imgs/{img_id}")
-    resized_img = cv2.resize(img, (224, 224))
-    normalized_image = cv2.normalize(resized_img, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
-    cv2.imwrite(f"{args.processed_data_folder}/CXR14/imgs/{img_id}", normalized_image)
+# processed_annotation = pd.merge(cxr14_annotations,kept_imgs,on=["Image Index"],how="left")
+# processed_annotation["Drain"] = processed_annotation["Drain"].fillna(-1)
+# processed_annotation["Pneumothorax"] = processed_annotation["Finding Labels"].apply(lambda x:"Pneumothorax" in x)
+# processed_annotation.to_csv(f"{args.processed_data_folder}/CXR14/processed_labels.csv")
+# for img_id in kept_imgs["Image Index"]:
+#     img = cv2.imread(f"{args.raw_data_folder}/CXR14/imgs/{img_id}")
+#     resized_img = cv2.resize(img, (224, 224))
+#     normalized_image = cv2.normalize(resized_img, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+#     cv2.imwrite(f"{args.processed_data_folder}/CXR14/imgs/{img_id}", normalized_image)
