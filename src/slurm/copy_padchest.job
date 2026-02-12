@@ -1,0 +1,9 @@
+#!/bin/bash
+#SBATCH --job-name=copy_padchest
+#SBATCH --output=copy_padchest.%j.out
+#SBATCH --cpus-per-task=8
+#SBATCH --time=70:00:00
+#SBATCH --partition=cores
+#SBATCH --mail-type=START,FAIL,END
+
+cp -rv /home/data_shares/purrlab/padchest /home/resy_nizp/MedCLIP_subgroup/data/raw/

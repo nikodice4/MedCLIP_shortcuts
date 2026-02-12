@@ -1,0 +1,9 @@
+#!/bin/bash
+#SBATCH --job-name=copy_nih
+#SBATCH --output=copy_nih.%j.out
+#SBATCH --cpus-per-task=8
+#SBATCH --time=70:00:00
+#SBATCH --partition=cores
+#SBATCH --mail-type=START,FAIL,END
+
+cp -rv /home/data_shares/purrlab/ChestX-ray14 /home/resy_nizp/MedCLIP_subgroup/data/raw/
