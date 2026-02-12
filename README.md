@@ -39,7 +39,7 @@ MedCLIP model trained on medical imaging data to uncover subgroups for robustnes
 │
 ├── setup.cfg          <- Configuration file for flake8
 │
-└── modules   <- Source code for use in this project.
+└── src   <- Source code for use in this project.
     │
     ├── __init__.py             <- Makes modules a Python module
     │
