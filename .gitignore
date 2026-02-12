@@ -1,5 +1,12 @@
 # Data
-/data/
+data/*
+
+!/data/processed
+
+# !/data/processed/training_dynamics/
+# !/data/processed/metrics_from_cnn_all_folds.csv
+
+/data/processed/nih/
 
 # Mac OS-specific storage files
 .DS_Store

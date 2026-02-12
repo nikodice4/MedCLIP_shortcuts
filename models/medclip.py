@@ -1,3 +1,5 @@
+# code credit: tsou
+
 from medclip import MedCLIPModel, MedCLIPVisionModel
 from medclip import MedCLIPProcessor
 from PIL import Image
