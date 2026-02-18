@@ -1,9 +1,12 @@
+.PHONY: clean data lint requirements
+
 #################################################################################
 # GLOBALS                                                                       #
 #################################################################################
 
+PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_NAME = MedCLIP_subgroup
-PYTHON_VERSION = 3.12
+PYTHON_VERSION = 3.10
 PYTHON_INTERPRETER = python
 
 #################################################################################
@@ -14,11 +17,74 @@ PYTHON_INTERPRETER = python
 ## Install Python dependencies
 .PHONY: requirements
 requirements:
-	$(PYTHON_INTERPRETER) -m pip install -U pip
+	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
-	
 
+preprocess:
+	$(PYTHON_INTERPRETER) src/data/processing.py
 
+## Make Train_None
+train_None:
+	NB_EPOCHS=100 \
+	BATCH_SIZE=32 \
+	IMBALANCE_RATIO=None \
+	LEARNING_RATE=0.00001 \
+	ES_DELTA=0.001 \
+	ES_PATIENCE=5 \
+	MODEL_NAME=resnet50 \
+	NB_FOLDS=3 \
+	$(PYTHON_INTERPRETER) src/models/cnn_run.py
+
+## Make Train_0
+train_0:
+	NB_EPOCHS=100 \
+	BATCH_SIZE=32 \
+	IMBALANCE_RATIO=0 \
+	LEARNING_RATE=0.00001 \
+	ES_DELTA=0.001 \
+	ES_PATIENCE=5 \
+	MODEL_NAME=resnet50 \
+	NB_FOLDS=3 \
+	$(PYTHON_INTERPRETER) src/models/cnn_run.py
+
+## Make Train_1
+train_1:
+	NB_EPOCHS=100 \
+	BATCH_SIZE=32 \
+	IMBALANCE_RATIO=1 \
+	LEARNING_RATE=0.00001 \
+	ES_DELTA=0.001 \
+	ES_PATIENCE=5 \
+	MODEL_NAME=resnet50 \
+	NB_FOLDS=3 \
+	$(PYTHON_INTERPRETER) src/models/cnn_run.py
+
+## Make Mapping_&_Plots_None
+mapping_None:
+	$(PYTHON_INTERPRETER) -m src.mapping.dynamics_filtering \
+		-o data/processed/testing_dynamics/ \
+		--ratio None \
+		--plot \
+		--filter \
+		--metric confidence
+
+## Make Mapping_&_Plots_0
+mapping_0:
+	$(PYTHON_INTERPRETER) -m src.mapping.dynamics_filtering \
+		-o data/processed/testing_dynamics/ \
+		--ratio 0 \
+		--plot \
+		--filter \
+		--metric confidence
+
+## Make Mapping_&_Plots_1
+mapping_1:
+	$(PYTHON_INTERPRETER) -m src.mapping.dynamics_filtering \
+		-o data/processed/testing_dynamics/ \
+		--ratio 1 \
+		--plot \
+		--filter \
+		--metric confidence
 
 ## Delete all compiled Python files
 .PHONY: clean
@@ -40,9 +106,6 @@ format:
 	ruff format
 
 
-
-
-
 ## Set up Python interpreter environment
 .PHONY: create_environment
 create_environment:
@@ -52,17 +115,15 @@ create_environment:
 	@echo ">>> conda env created. Activate with:\nconda activate $(PROJECT_NAME)"
 	
 
-
-
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################
 
 
-## Make dataset
-.PHONY: data
-data: requirements
-	$(PYTHON_INTERPRETER) modules/dataset.py
+# ## Make dataset
+# .PHONY: data
+# data: requirements
+# 	$(PYTHON_INTERPRETER) cookie_cutter_data_maps/dataset.py
 
 
 #################################################################################
