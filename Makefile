@@ -20,8 +20,8 @@ requirements:
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
-preprocess:
-	$(PYTHON_INTERPRETER) src/data/processing.py
+preprocess_chestX:
+	$(PYTHON_INTERPRETER) src/data/processing_chestX.py
 
 ## Make Train_None
 train_None:
