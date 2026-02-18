@@ -18,10 +18,4 @@ source activate medclip
 
 make requirements
 
-cd src/data
-
-python make_dataset.py \
-    ../../data/raw/padchest \
-    ../../data/raw/padchest \
-    ../../data/processed/padchest \
-    ""
+make preprocess_padchest

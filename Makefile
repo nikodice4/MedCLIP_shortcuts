@@ -23,6 +23,13 @@ requirements:
 preprocess_chestX:
 	$(PYTHON_INTERPRETER) src/data/processing_chestX.py
 
+preprocess_padchest:
+	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \
+    ../../data/raw/ChestX-ray14 \
+    ../../data/raw/ChestX-ray14 \
+    ../../data/processed/ChestX-ray14 \
+    ""
+
 ## Make Train_None
 train_None:
 	NB_EPOCHS=100 \

@@ -18,10 +18,6 @@ source activate medclip
 
 make requirements
 
-cd src/data
+#cd src/data
 
-python make_dataset.py \
-    ../../data/raw/ChestX-ray14 \
-    ../../data/raw/ChestX-ray14 \
-    ../../data/processed/ChestX-ray14 \
-    ""
+make preprocess_chestX
