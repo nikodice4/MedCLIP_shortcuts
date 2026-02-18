@@ -120,16 +120,20 @@ def filter_and_process_labels(input_filepath,output_filepath, df):
 
 
 # tqdm works, even though it says 3004 images
-def create_images(input_filepath,output_filepath):
-    #Load labels
+def create_images(input_filepath, output_filepath):
     labels = pd.read_csv(f'{output_filepath}/processed_labels.csv')
     labels["Labels"] = labels["Labels"].apply(lambda x: ast.literal_eval(x))
-    #Filter images to remove lateral views
     os.makedirs(f"./{output_filepath}/images", exist_ok=True)
 
-    #Get images present at input_filepath
-    images_path = glob.glob(f"./{input_filepath}/**/*.png",recursive=True)
+    images_path = glob.glob(f"./{input_filepath}/**/*.png", recursive=True)
     image_names = [path.split('/')[-1] for path in images_path]
+
+    # Debug lines here, inside the function
+    print(f"Found {len(images_path)} images at {input_filepath}")
+    print(f"Sample image names: {image_names[:5]}")
+    print(f"Sample ImageIDs: {labels['ImageID'].unique()[:5]}")
+
+    
     for idx,i_name in enumerate(tqdm(image_names, dynamic_ncols=True)):
         #Resize the image and save it in the processed folder
         if i_name in labels["ImageID"].unique():

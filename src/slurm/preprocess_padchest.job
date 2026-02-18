@@ -14,7 +14,7 @@ cd /home/resy_nizp/MedCLIP_subgroup
 
 #make create_environment
 
-source activate medclip
+source activate MedCLIP_subgroup
 
 make requirements
 
