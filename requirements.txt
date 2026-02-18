@@ -14,3 +14,7 @@ typer
 -e .
 
 opencv-python
+dotenv
+scikit-image
+imageio[pyav]
+tensorflow==2.20.0
