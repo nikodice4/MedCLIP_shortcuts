@@ -25,9 +25,9 @@ preprocess_chestX:
 
 preprocess_padchest:
 	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \
-    ../../data/raw/ChestX-ray14 \
-    ../../data/raw/ChestX-ray14 \
-    ../../data/processed/ChestX-ray14 \
+    data/raw/padchest \
+    data/raw/padchest \
+    data/processed/padchest \
     ""
 
 ## Make Train_None
