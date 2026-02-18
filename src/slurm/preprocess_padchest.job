@@ -12,7 +12,7 @@ module load Anaconda3
 
 cd /home/resy_nizp/MedCLIP_subgroup
 
-#make create_environment
+make create_environment
 
 source activate MedCLIP_subgroup
 
