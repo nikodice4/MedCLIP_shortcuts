@@ -11,10 +11,11 @@ ruff
 scikit-learn
 tqdm
 typer
+seaborn
 -e .
 
 opencv-python
 dotenv
 scikit-image
 imageio[pyav]
-tensorflow==2.20.0
+tensorflow
