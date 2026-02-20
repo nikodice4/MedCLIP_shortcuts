@@ -1,9 +1,11 @@
 # code credit: tsou
 
-import cv2
 import pandas as pd
 from pathlib import Path
 import argparse
+import numpy as np
+from skimage import io
+from skimage.transform import resize
 
 
 parser = argparse.ArgumentParser()
@@ -31,10 +33,12 @@ processed_annotation["Pneumothorax"] = processed_annotation["Finding Labels"].ap
 processed_annotation.to_csv(f"{args.processed_data_folder}/ChestX-ray14/processed_labels.csv")
 for img_id in kept_imgs["Image Index"]:
     img_path = f"{args.raw_data_folder}/ChestX-ray14/images/{img_id}"
-    img = cv2.imread(img_path)
+    img = io.imread(img_path)
     if img is None:
         print(f"No {img_path}, skip it")
         continue
-    resized_img = cv2.resize(img, (224, 224))
-    normalized_image = cv2.normalize(resized_img, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
-    cv2.imwrite(f"{args.processed_data_folder}/ChestX-ray14/images/{img_id}", normalized_image)
+    # Resize to 224x224, output as uint8
+    resized_img = resize(img, (224, 224), preserve_range=True).astype(np.uint8)
+    # Normalize to 0-255
+    normalized_image = ((resized_img - resized_img.min()) / (resized_img.max() - resized_img.min()) * 255).astype(np.uint8)
+    io.imsave(f"{args.processed_data_folder}/ChestX-ray14/images/{img_id}", normalized_image)

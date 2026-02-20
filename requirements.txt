@@ -11,10 +11,10 @@ ruff
 scikit-learn
 tqdm
 typer
-seaborn
 -e .
 
-opencv-python
+#for preprocessing
+opencv-python-headless
 dotenv
 scikit-image
 imageio[pyav]
