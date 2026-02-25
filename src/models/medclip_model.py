@@ -1,9 +1,10 @@
-# code credit: tsou
-import torch
-import torch.nn as nn
-from medclip import MedCLIPModel, MedCLIPVisionModel
+from medclip import MedCLIPModel, MedCLIPVisionModelViT
 from medclip import MedCLIPProcessor
 from PIL import Image
+import functools
+import torch
+original_torch_load = torch.load
+torch.load = functools.partial(original_torch_load, map_location="cpu")
 
 # prepare for the demo image and texts
 # processor = MedCLIPProcessor()
@@ -17,7 +18,7 @@ from PIL import Image
 #     )
 
 # # pass to MedCLIP model
-# model = MedCLIPModel(vision_cls=MedCLIPVisionModel)
+# model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
 # model.from_pretrained()
 # model.cuda()
 # outputs = model(**inputs)
@@ -27,17 +28,15 @@ from PIL import Image
 class MedCLIP():
     def __init__(self):
         self.processor = MedCLIPProcessor()
-        self.model = MedCLIPModel(vision_cls=MedCLIPVisionModel) #changed from ViT to VisionModel for ResNet-50 backbone
+        self.model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
         self.model.from_pretrained()
-        self.model.eval() 
-        self.model.cuda()
+        self.model.eval()
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model.to(self.device)
+        torch.load = original_torch_load
 
-        # add hook store we can write into and read from
-        self.hook_store = {}
-
+    def get_embeddings(self,image_paths,labels):
         
-
-    def get_embeddings(self,image_paths,labels): # loads images and text, gets the embedding
         #Load the images
         images = []
         for p in image_paths:
@@ -59,7 +58,7 @@ class MedCLIP():
         #Return the emddings
         return embeddings
 
-    def get_predictions(self,image_paths,labels): # the zero-shot classification ability of CLIP-based models
+    def get_predictions(self,image_paths,labels):
         #Load the images
         images = []
         for p in image_paths:
@@ -78,7 +77,7 @@ class MedCLIP():
         #Return the emddings
         return softmax.tolist()
     
-    def get_embeddings_and_predictions(self,image_paths,labels): # combines the above into one pass
+    def get_embeddings_and_predictions(self,image_paths,labels):
         #Load the images
         images = []
         for p in image_paths:

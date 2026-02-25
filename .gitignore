@@ -3,6 +3,7 @@ data/*
 
 /data/processed/ChestX-ray14/
 
+**/pretrained
 #!/data/processed
 
 # !/data/processed/training_dynamics/
