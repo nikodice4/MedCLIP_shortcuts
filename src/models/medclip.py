@@ -1,5 +1,6 @@
 # code credit: tsou
-
+import torch
+import torch.nn as nn
 from medclip import MedCLIPModel, MedCLIPVisionModel
 from medclip import MedCLIPProcessor
 from PIL import Image
@@ -28,10 +29,15 @@ class MedCLIP():
         self.processor = MedCLIPProcessor()
         self.model = MedCLIPModel(vision_cls=MedCLIPVisionModel) #changed from ViT to VisionModel for ResNet-50 backbone
         self.model.from_pretrained()
-        self.model.eval()
+        self.model.eval() 
         self.model.cuda()
 
-    def get_embeddings(self,image_paths,labels):
+        # add hook store we can write into and read from
+        self.hook_store = {}
+
+        
+
+    def get_embeddings(self,image_paths,labels): # loads images and text, gets the embedding
         #Load the images
         images = []
         for p in image_paths:
@@ -53,7 +59,7 @@ class MedCLIP():
         #Return the emddings
         return embeddings
 
-    def get_predictions(self,image_paths,labels):
+    def get_predictions(self,image_paths,labels): # the zero-shot classification ability of CLIP-based models
         #Load the images
         images = []
         for p in image_paths:
@@ -72,7 +78,7 @@ class MedCLIP():
         #Return the emddings
         return softmax.tolist()
     
-    def get_embeddings_and_predictions(self,image_paths,labels):
+    def get_embeddings_and_predictions(self,image_paths,labels): # combines the above into one pass
         #Load the images
         images = []
         for p in image_paths:
