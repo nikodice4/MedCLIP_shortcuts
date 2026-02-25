@@ -6,6 +6,7 @@ import argparse
 import numpy as np
 from skimage import io
 from skimage.transform import resize
+import os
 
 
 parser = argparse.ArgumentParser()
@@ -33,10 +34,10 @@ processed_annotation["Pneumothorax"] = processed_annotation["Finding Labels"].ap
 processed_annotation.to_csv(f"{args.processed_data_folder}/ChestX-ray14/processed_labels.csv")
 for img_id in kept_imgs["Image Index"]:
     img_path = f"{args.raw_data_folder}/ChestX-ray14/images/{img_id}"
-    img = io.imread(img_path)
-    if img is None:
-        print(f"No {img_path}, skip it")
+    if not os.path.exists(img_path):
+        #print(f"No {img_path}, skip it")
         continue
+    img = io.imread(img_path)
     # Resize to 224x224, output as uint8
     resized_img = resize(img, (224, 224), preserve_range=True).astype(np.uint8)
     # Normalize to 0-255
