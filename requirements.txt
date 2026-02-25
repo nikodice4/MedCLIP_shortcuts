@@ -15,7 +15,13 @@ typer
 
 #for preprocessing
 opencv-python-headless
-dotenv
 scikit-image
 imageio[pyav]
 tensorflow
+
+#medclip
+open_clip_torch
+torch==2.4.1
+torchvision==0.19.1
+medclips
+transformers==4.44.2
