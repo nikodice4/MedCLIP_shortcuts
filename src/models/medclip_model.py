@@ -16,7 +16,7 @@ torch.load = functools.partial(original_torch_load, map_location="cpu")
 #     return_tensors="pt", 
 #     padding=True
 #     )
-    
+
 # # pass to MedCLIP model
 # model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
 # model.from_pretrained()
@@ -38,10 +38,17 @@ class MedCLIP():
     def get_embeddings(self,image_paths,labels):
         
         #Load the images
+        # images = []
+        # for p in image_paths:
+        #     images.append(Image.open(p))
+
+### new
         images = []
         for p in image_paths:
-            images.append(Image.open(p))
-        
+            with Image.open(p) as img:
+                images.append(img.copy())
+### new
+  
         #Process the inputs and pass to the model
         inputs = self.processor(
             text=labels, 
@@ -60,10 +67,17 @@ class MedCLIP():
 
     def get_predictions(self,image_paths,labels):
         #Load the images
+        # images = []
+        # for p in image_paths:
+        #     images.append(Image.open(p))
+
+### new
         images = []
         for p in image_paths:
-            images.append(Image.open(p))
-        
+            with Image.open(p) as img:
+                images.append(img.copy())
+### new
+
         #Process the inputs and pass to the model
         inputs = self.processor(
             text=labels, 
@@ -79,9 +93,16 @@ class MedCLIP():
     
     def get_embeddings_and_predictions(self,image_paths,labels):
         #Load the images
+        # images = []
+        # for p in image_paths:
+        #     images.append(Image.open(p))
+
+### new
         images = []
         for p in image_paths:
-            images.append(Image.open(p))
+            with Image.open(p) as img:
+                images.append(img.copy())
+### new
         
         #Process the inputs and pass to the model
         inputs = self.processor(
