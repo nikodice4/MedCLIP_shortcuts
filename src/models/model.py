@@ -12,8 +12,18 @@ labels = ["no finding", "pneumothorax"]
 image_dir = "data/processed/ChestX-ray14/images"
 image_paths = [os.path.join(image_dir, f) for f in os.listdir(image_dir) if f.endswith(".png")]
 
+# added batchsize
+BATCH_SIZE = 32
+all_probs = []
+
 # try and predict
-probs = clf.get_predictions(image_paths, labels)
+for i in range(0, len(image_paths), BATCH_SIZE):
+    batch = image_paths[i:i+BATCH_SIZE]
+    probs = clf.get_predictions(batch, labels)
+    all_probs.extend(probs)
+    print(f"Processed {min(i+BATCH_SIZE, len(image_paths))}/{len(image_paths)}")
+
+# probs = clf.get_predictions(image_paths, labels)
 
 # save csv 
 df = pd.DataFrame(probs, columns=labels)
