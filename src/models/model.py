@@ -31,5 +31,4 @@ df = pd.DataFrame(all_probs, columns=labels)
 df.insert(0, "image", [os.path.basename(p) for p in image_paths])
 df.to_csv("data/processed/medclip_predictions_test.csv", index=False)
 
-print(df.head())
 print(f"Saved {len(df)} predictions to medclip_predictions.csv")
