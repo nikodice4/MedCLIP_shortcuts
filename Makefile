@@ -21,7 +21,7 @@ requirements:
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
 preprocess_chestX:
-	$(PYTHON_INTERPRETER) src/data/processing_chestX.py
+	$(PYTHON_INTERPRETER) src/data/new_processing_chestX.py
 
 preprocess_padchest:
 	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \
