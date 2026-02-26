@@ -12,6 +12,8 @@ module load Anaconda3
 
 cd /home/resy_nizp/MedCLIP_subgroup
 
-conda activate MedCLIP_subgroup
+source activate MedCLIP_subgroup
+
+make requirements
 
 make run_medclip
