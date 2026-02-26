@@ -1,4 +1,4 @@
-from medclip import MedCLIPModel, MedCLIPVisionModelViT
+from medclip import MedCLIPModel, MedCLIPVisionModel
 from medclip import MedCLIPProcessor
 from PIL import Image
 import functools
@@ -16,7 +16,7 @@ torch.load = functools.partial(original_torch_load, map_location="cpu")
 #     return_tensors="pt", 
 #     padding=True
 #     )
-
+    
 # # pass to MedCLIP model
 # model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
 # model.from_pretrained()
@@ -28,7 +28,7 @@ torch.load = functools.partial(original_torch_load, map_location="cpu")
 class MedCLIP():
     def __init__(self):
         self.processor = MedCLIPProcessor()
-        self.model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
+        self.model = MedCLIPModel(vision_cls=MedCLIPVisionModel)
         self.model.from_pretrained()
         self.model.eval()
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
