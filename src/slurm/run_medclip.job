@@ -12,13 +12,13 @@ module load Anaconda3
 
 cd /home/resy_nizp/MedCLIP_subgroup
 
-conda env list
+# conda env list
 
-source activate MedCLIP_subgroup
+# source activate MedCLIP_subgroup
 
-which python
-python --version
+# which python
+# python --version
 
-make requirements
+# make requirements
 
 make run_medclip
