@@ -14,6 +14,9 @@ cd /home/resy_nizp/MedCLIP_subgroup
 
 source activate MedCLIP_subgroup
 
+which python
+python --version
+
 make requirements
 
 make run_medclip
