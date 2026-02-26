@@ -27,6 +27,34 @@ processed_annotation["Drain"] = processed_annotation["Drain"].fillna(-1)
 processed_annotation["Pneumothorax"] = processed_annotation["Finding Labels"].apply(lambda x:"Pneumothorax" in x)
 processed_annotation.to_csv(f"{args.processed_data_folder}/ChestX-ray14/processed_labels.csv")
 
+####################################
+print("#################################### SANITY CHECKING ####################################")
+print(f"TOTAL IMAGES IDS: {len(test_imgs_ids)}")
+print(f"ANNOTATIONS CXR14: {len(cxr14_annotations)}")
+print(f"ANNOTATIONS NEATX: {len(kept_imgs)}")
+print(f"TOTAL ANNOTATIONS: {len(processed_annotation)}")
+print(f"UNIQUE IMAGES IN KEPT: {kept_imgs['Image Index'].nunique()}")
+
+
+print("#################################### EXIST? ####################################")
+missing = []
+found = []
+for img_id in kept_imgs["Image Index"]:
+    img_path = f"{args.raw_data_folder}/ChestX-ray14/images/{img_id}"
+    if os.path.exists(img_path):
+        found.append(img_id)
+    else:
+        missing.append(img_id)
+
+print(f"FOUND: {len(found)}")
+print(f"MISSING: {len(missing)}")
+if missing:
+    print("MISSING IMAGES:")
+    for m in missing:
+        print(f"####################################{m}")
+
+####################################
+
 for img_id in kept_imgs["Image Index"]:
     img = cv2.imread(f"{args.raw_data_folder}/ChestX-ray14/images/{img_id}")
     resized_img = cv2.resize(img, (224, 224))
