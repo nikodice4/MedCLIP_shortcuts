@@ -30,9 +30,11 @@ preprocess_padchest:
     data/processed/padchest \
     ""
 
-run_medclip:
-	$(PYTHON_INTERPRETER) src/models/model.py
+# run_medclip:
+# 	$(PYTHON_INTERPRETER) src/models/model.py
 
+run_medclip:
+	/home/nizp/.conda/envs/MedCLIP_subgroup/bin/python src/models/model.py
 
 ## Delete all compiled Python files
 .PHONY: clean
