@@ -2,6 +2,7 @@ import cv2
 import pandas as pd
 from pathlib import Path
 import argparse
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--raw_data_folder', default='data/raw')
