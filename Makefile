@@ -20,8 +20,11 @@ requirements:
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
-preprocess_chestX:
-	$(PYTHON_INTERPRETER) src/data/new_processing_chestX.py
+train_preprocess_chestX:
+	$(PYTHON_INTERPRETER) src/data/train_processing_chestX.py
+
+test_preprocess_chestX:
+	$(PYTHON_INTERPRETER) src/data/test_processing_chestX.py
 
 preprocess_padchest:
 	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \

@@ -1,6 +1,7 @@
 import cv2
 import pandas as pd
 from pathlib import Path
+from skimage import io
 import argparse
 import os
 
@@ -9,8 +10,12 @@ parser.add_argument('--raw_data_folder', default='data/raw')
 parser.add_argument('--processed_data_folder', default='data/processed')
 
 args, unknown = parser.parse_known_args()
-Path(f"{args.processed_data_folder}/").mkdir(parents=True, exist_ok=True)
-Path(f"{args.processed_data_folder}/ChestX-ray14/images").mkdir(parents=True, exist_ok=True)
+output_dir = f"{args.processed_data_folder}/ChestX-ray14/test"
+Path(f"{output_dir}/images").mkdir(parents=True, exist_ok=True)
+Path(f"{output_dir}/files").mkdir(parents=True, exist_ok=True)
+
+# Path(f"{args.processed_data_folder}/").mkdir(parents=True, exist_ok=True)
+# Path(f"{args.processed_data_folder}/ChestX-ray14/images").mkdir(parents=True, exist_ok=True)
 
 
 #Load test list to count
@@ -21,7 +26,9 @@ with open(f'{args.raw_data_folder}/ChestX-ray14/test_list.txt', 'r') as file:
 #Load Theos annotations
 annotations = pd.read_csv(f"{args.processed_data_folder}/ChestX-ray14/CXR14_Drains_Labels.csv", sep=';', index_col=0)
 
-annotations.to_csv(f"{args.processed_data_folder}/ChestX-ray14/processed_labels_drains.csv")
+annotations.to_csv(f"{output_dir}/files/processed_labels_drains.csv")
+
+# annotations.to_csv(f"{args.processed_data_folder}/ChestX-ray14/processed_labels_drains.csv")
 
 ####################################
 print("#################################### SANITY CHECKING ####################################")
@@ -48,7 +55,13 @@ if missing:
 ####################################
 
 for img_id in annotations["Image Index"]:
-    img = cv2.imread(f"{args.raw_data_folder}/ChestX-ray14/images/{img_id}")
+    img_path = f"{args.raw_data_folder}/ChestX-ray14/images/{img_id}"
+    if not os.path.exists(img_path):
+        continue
+    img = cv2.imread(img_path)
+    if img is None:
+        continue
     resized_img = cv2.resize(img, (224, 224))
     normalized_image = cv2.normalize(resized_img, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
-    cv2.imwrite(f"{args.processed_data_folder}/ChestX-ray14/images/{img_id}", normalized_image)
+    cv2.imwrite(f"{output_dir}/images/{img_id}", normalized_image)
+    # cv2.imwrite(f"{args.processed_data_folder}/ChestX-ray14/test/images/{img_id}", normalized_image)
