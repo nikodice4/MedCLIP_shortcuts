@@ -19,7 +19,7 @@ with open(f'{args.raw_data_folder}/ChestX-ray14/test_list.txt', 'r') as file:
 
 
 #Load Theos annotations
-annotations = pd.read_csv(f"{args.raw_data_folder}/ChestX-ray14/CXR14_Drains_Labels.csv", sep=';', index_col=0)
+annotations = pd.read_csv(f"{args.processed_data_folder}/ChestX-ray14/CXR14_Drains_Labels.csv", sep=';', index_col=0)
 
 annotations.to_csv(f"{args.processed_data_folder}/ChestX-ray14/processed_labels_drains.csv")
 
