@@ -59,6 +59,11 @@ format:
 	ruff format
 
 
+.PHONY: remove_environment
+create_environment:
+	conda remove --name MedCLIP_subgroup --all -y
+
+
 ## Set up Python interpreter environment
 .PHONY: create_environment
 create_environment:

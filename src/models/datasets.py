@@ -15,7 +15,7 @@ class ChestX_ray(Dataset):
         df = pd.read_csv(csv_path, index_col=0)
 
         self.img_paths = [Path(img_path) / x for x in df["Image Index"]]
-        self.labels    = (df["Pneumothorax"].astype(str).str.strip().str.lower() == "true").astype(int).tolist()
+        self.labels = (df["Pneumothorax"].astype(str).str.strip().str.lower() == "true").astype(int).tolist()
         self.transform = transform
 
     def __len__(self):
