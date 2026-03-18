@@ -26,6 +26,10 @@ train_preprocess_chestX:
 test_preprocess_chestX:
 	$(PYTHON_INTERPRETER) src/data/test_processing_chestX.py
 
+train_probes:
+	$(PYTHON_INTERPRETER) -m src.models.main
+
+
 preprocess_padchest:
 	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \
     data/raw/padchest \

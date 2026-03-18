@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from medclip_model import MedCLIP
+from old.medclip_model import MedCLIP
 
 
 clf = MedCLIP()
