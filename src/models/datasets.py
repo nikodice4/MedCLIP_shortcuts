@@ -1,3 +1,5 @@
+# datasets.py: a script where we define the dataset, image transformations used for training and eval
+
 import pandas as pd
 from pathlib import Path
 from PIL import Image
@@ -20,7 +22,6 @@ class ChestXray(Dataset):
         pairs = [(p, l) for p, l in zip(all_paths, all_labels) if p.exists()]
         if len(pairs) < len(all_paths):
             print(f"🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨 {len(all_paths) - len(pairs)} img not found")
-
 
         all_patient_ids = df["Patient ID"].tolist()  # new
  

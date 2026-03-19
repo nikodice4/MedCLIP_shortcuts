@@ -1,3 +1,4 @@
+# config.py: out configurations for training, hyperparameters and such
 
 from pathlib import Path
 
@@ -11,6 +12,7 @@ TEST_CSV = PROCESSED_ROOT / "test/files/processed_labels_drains.csv"
 
 WEIGHTS_PATH = Path("models/probes/probe_weights.pt")
 FIGURES_DIR = Path("reports/figures")
+REPORTS_DIR = Path("reports")
 
 # hyperparameters from research project
 NB_EPOCHS = 100

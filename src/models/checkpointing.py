@@ -1,3 +1,5 @@
+# checkpointing.py: this script will help us, if the model stops running, we have a checkpoitn to continue training from
+
 import torch
 
 def checkpoint(optimiser, model, filename):

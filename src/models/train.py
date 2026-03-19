@@ -1,3 +1,4 @@
+# train.py: script that trains and validates our model, has early stopping, checkpoint
 
 import numpy as np
 import torch
@@ -148,6 +149,6 @@ def train_probes():
             break
 
     print(f"\nBest val_loss: {best_val_loss:.4f}")
-    print(f"Probe weights saved → {config.WEIGHTS_PATH}")
+    print(f"Probe weights saved -> {config.WEIGHTS_PATH}")
 
     return train_loss, train_auc, val_loss, val_auc, model

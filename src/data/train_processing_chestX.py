@@ -1,3 +1,5 @@
+# train_processing_chestX.py: this script will process the train images
+
 import cv2
 import pandas as pd
 from pathlib import Path

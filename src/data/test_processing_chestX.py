@@ -1,3 +1,5 @@
+# test_processing_chestX.py: this script will process the test images
+
 import cv2
 import pandas as pd
 from pathlib import Path

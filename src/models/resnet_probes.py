@@ -1,7 +1,5 @@
-# models/resnet_probes.py, frozen MedCLIP ResNet-50 backbone with  LinearProbe
-# attached after each of the 16 bottleneck blocks via forward hooks,
-# plus one final probe on the avgpool output.
-
+# resnet_probes.py: script consisting of our frozen MedCLIP ResNet-50 backbone with linear probes attached after each 
+# of the 16 bottleneck blocks via forward hooks, plus one final probe on the avgpool output.
 
 import functools
 import torch
