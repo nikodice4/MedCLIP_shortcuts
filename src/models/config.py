@@ -13,7 +13,7 @@ WEIGHTS_PATH = Path("models/probes/probe_weights.pt")
 FIGURES_DIR = Path("reports/figures")
 
 # hyperparameters from research project
-NB_EPOCHS = 1
+NB_EPOCHS = 100
 BATCH_SIZE = 32
 LR = 0.00001
 ES_DELTA = 0.001
