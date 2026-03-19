@@ -5,11 +5,13 @@ import torch.nn as nn
 from tqdm import tqdm
 from torch.utils.data import DataLoader
 from sklearn.metrics import roc_auc_score
+import os
 
 from . import config
 from .datasets import ChestXray, transform
 from .resnet_probes import FrozenResNetWithProbes
 from .data_split import get_train_val_split
+from .checkpointing import checkpoint, resume
 
 torch.manual_seed(42)
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -50,7 +52,17 @@ def train_probes():
     best_val_loss = float("inf")
     earlystopping_count = 0
 
-    for epoch in range(1, config.NB_EPOCHS + 1):
+    start_epoch = 0  # Change this manually to resume (e.g., set to 5 if crashed at epoch 4)
+
+    os.makedirs('models/checkpoint', exist_ok=True)
+    checkpoint_path = f'models/checkpoint/clip_checkpoint.pth'
+
+    if start_epoch > 0 and os.path.exists(checkpoint_path):
+        resume(model, optimiser, checkpoint_path)
+        print(f"Resumed from checkpoint at epoch {start_epoch}")
+
+
+    for epoch in range(start_epoch, config.NB_EPOCHS):
         print(f"\nEpoch {epoch}/{config.NB_EPOCHS}")
         print("-" * 10)
 
