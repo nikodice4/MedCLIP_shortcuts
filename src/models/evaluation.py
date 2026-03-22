@@ -14,9 +14,15 @@ from .train import DEVICE
 
 def evaluate():
     # --------------------- data --------------------- #
+    drain_df = pd.read_csv(config.TEST_CSV, index_col=0)
+    drain_def = dict(zip(drain_df["Image Index"], drain_df["Drain"].astype(int)))
+
     train_ds = ChestXray(config.TRAIN_CSV, config.TRAIN_IMG_DIR, transform=transform)
     test_ds  = ChestXray(config.TEST_CSV,  config.TEST_IMG_DIR,  transform=transform)
     print(f"Train: {len(train_ds)} samples. Test: {len(test_ds)} samples")
+
+    y_filenames = [p.name for p in test_ds.img_paths]
+    y_drain = [drain_def.get(fname, 0) for fname in y_filenames]
 
     train_loader = DataLoader(train_ds, batch_size=config.BATCH_SIZE, shuffle=False)
     test_loader  = DataLoader(test_ds,  batch_size=config.BATCH_SIZE, shuffle=False)
@@ -43,7 +49,7 @@ def evaluate():
     print(f"mean probabilities for train: done", flush=True)
 
     # --------------------- collect mean probability per layer (test) --------------------- #
-    test_mean_probs = [[] for _ in range(len(model.probes) + 1)]
+    test_all_probs = [[] for _ in range(len(model.probes) + 1)] # added to allow for image-wise drain
 
     with torch.no_grad():
         for imgs, _ in tqdm(test_loader, desc="Mean probs test"):
@@ -52,9 +58,9 @@ def evaluate():
 
             for i, logit in enumerate(probe_logits + [final_logit]):
                 prob = logit.softmax(dim=1)[:, 1]  # P(pneumothorax)
-                test_mean_probs[i].extend(prob.cpu().tolist())
+                test_all_probs[i].extend(prob.cpu().tolist())
 
-    test_mean_probs = [np.mean(p) for p in test_mean_probs]
+    test_mean_probs = [np.mean(p) for p in test_all_probs]
     print(f"mean probabilities for test: done", flush=True)
 
     # --------------------- collect calibration data --------------------- #
@@ -85,8 +91,24 @@ def evaluate():
     print(f"saved test -> {test_prob_path}")
 
     calib_path = config.REPORTS_DIR / "calibration.csv"
-    pd.DataFrame({"y_true": y_true, "y_prob": y_prob}).to_csv(calib_path, index=False)
+    pd.DataFrame({"y_true": y_true, "y_prob": y_prob, "drain": y_drain}).to_csv(calib_path, index=False)
     print(f"saved calibration path -> {calib_path}")
+
+    drain = [i for i, d in enumerate(y_drain) if d == 1]
+    no_drain = [i for i, d in enumerate(y_drain) if d == 0]
+
+    drain_rows   = []
+    nodrain_rows = []
+
+    for layer_idx, probs in enumerate(test_all_probs):
+        drain_mean   = np.mean([probs[i] for i in drain])
+        nodrain_mean = np.mean([probs[i] for i in no_drain])
+        drain_rows.append({"layer": layer_idx + 1, "mean_probability": drain_mean})
+        nodrain_rows.append({"layer": layer_idx + 1, "mean_probability": nodrain_mean})
+
+    pd.DataFrame(drain_rows).to_csv(config.REPORTS_DIR / "mean_probability_per_layer_drain.csv", index=False)
+    pd.DataFrame(nodrain_rows).to_csv(config.REPORTS_DIR / "mean_probability_per_layer_nodrain.csv", index=False)
+    print(f"saved drain and nodrain mean probs")
 
 if __name__ == "__main__":
     evaluate()

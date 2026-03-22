@@ -10,7 +10,8 @@ TRAIN_CSV = PROCESSED_ROOT / "train/files/processed_labels_train.csv"
 TEST_IMG_DIR = PROCESSED_ROOT / "test/images"
 TEST_CSV = PROCESSED_ROOT / "test/files/processed_labels_drains.csv"
 
-WEIGHTS_PATH = Path("models/probes/probe_weights.pt")
+# WEIGHTS_PATH = Path("models/probes/probe_weights.pt") # COMMENTED OUR FOR NOW
+WEIGHTS_PATH = Path("models/probes/probe_weights_epoch68.pt") # CHANGED JUST TO GET AN IDEA
 FIGURES_DIR = Path("reports/figures")
 REPORTS_DIR = Path("reports")
 

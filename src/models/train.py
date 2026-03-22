@@ -53,13 +53,14 @@ def train_probes():
     best_val_loss = float("inf")
     earlystopping_count = 0
 
-    start_epoch = 0  # Change this manually to resume (e.g., set to 5 if crashed at epoch 4)
-
     os.makedirs('models/checkpoint', exist_ok=True)
     checkpoint_path = f'models/checkpoint/clip_checkpoint.pth'
 
-    if start_epoch > 0 and os.path.exists(checkpoint_path):
-        resume(model, optimiser, checkpoint_path)
+    start_epoch = 0  # Change this manually to resume (e.g., set to 5 if crashed at epoch 4)
+
+    # if start_epoch > 0 and os.path.exists(checkpoint_path):
+    if os.path.exists(checkpoint_path):
+        start_epoch = resume(model, optimiser, checkpoint_path)
         print(f"Resumed from checkpoint at epoch {start_epoch}")
 
 
@@ -147,6 +148,8 @@ def train_probes():
         if earlystopping_count >= config.ES_PATIENCE:
             print(f"Early stopping at epoch {epoch}")
             break
+
+        checkpoint(model, optimiser, epoch + 1, checkpoint_path) # added for checkpointing
 
     print(f"\nBest val_loss: {best_val_loss:.4f}")
     print(f"Probe weights saved -> {config.WEIGHTS_PATH}")

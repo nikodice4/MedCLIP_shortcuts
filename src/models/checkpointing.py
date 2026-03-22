@@ -2,13 +2,15 @@
 
 import torch
 
-def checkpoint(optimiser, model, filename):
+def checkpoint(model, optimiser, epoch, filename):
     torch.save({
-        'optimiser': optimiser.state_dict(),
         'model': model.state_dict(),
+        'optimiser': optimiser.state_dict(),
+        'epoch': epoch,
     }, filename)
     
 def resume(model, optimiser, filename):
     checkpoint = torch.load(filename)
     model.load_state_dict(checkpoint['model'])
     optimiser.load_state_dict(checkpoint['optimiser'])
+    return checkpoint['epoch']
