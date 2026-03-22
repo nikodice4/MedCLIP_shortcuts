@@ -39,6 +39,7 @@ def plot_confidence():
         ax.set_xticks(df["layer"].unique())
         ax.legend()
         ax.grid(True)
+        ax.set_ylim(0, 0.5)
 
         plt.tight_layout()
 
