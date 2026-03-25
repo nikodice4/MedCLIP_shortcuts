@@ -60,7 +60,9 @@ def train_probes():
 
     # if start_epoch > 0 and os.path.exists(checkpoint_path):
     if os.path.exists(checkpoint_path):
-        start_epoch = resume(model, optimiser, checkpoint_path)
+        # start_epoch = resume(model, optimiser, checkpoint_path) # commented out due to checkpoint
+        start_epoch, best_val_loss, earlystopping_count = resume(model, optimiser, checkpoint_path)
+
         print(f"Resumed from checkpoint at epoch {start_epoch}")
 
 
@@ -149,7 +151,9 @@ def train_probes():
             print(f"Early stopping at epoch {epoch}")
             break
 
-        checkpoint(model, optimiser, epoch + 1, checkpoint_path) # added for checkpointing
+        # checkpoint(model, optimiser, epoch + 1, checkpoint_path) # added for checkpointing
+        checkpoint(model, optimiser, epoch + 1, checkpoint_path, best_val_loss, earlystopping_count)
+
 
     print(f"\nBest val_loss: {best_val_loss:.4f}")
     print(f"Probe weights saved -> {config.WEIGHTS_PATH}")
