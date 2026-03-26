@@ -1,0 +1,9 @@
+Makefile:79: warning: overriding recipe for target 'create_environment'
+Makefile:73: warning: ignoring old recipe for target 'create_environment'
+python -m src.models.plotting
+saved confidence -> reports/figures/confidence_per_layer_Train_data.png
+saved confidence -> reports/figures/confidence_per_layer_Test_data.png
+saved confidence -> reports/figures/drain_plots/confidence_per_layer_Test_data_drains.png
+saved confidence -> reports/figures/drain_plots/confidence_per_layer_Test_data_nodrains.png
+saved confidence -> reports/figures/sex_plots/confidence_per_layer_Test_data_female.png
+saved confidence -> reports/figures/sex_plots/confidence_per_layer_Test_data_male.png
