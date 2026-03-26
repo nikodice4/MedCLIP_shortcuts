@@ -12,8 +12,13 @@ TEST_CSV = PROCESSED_ROOT / "test/files/processed_labels_drains.csv"
 
 WEIGHTS_PATH = Path("models/probes/probe_weights.pt") # COMMENTED OUR FOR NOW
 # WEIGHTS_PATH = Path("models/probes/probe_weights_epoch68.pt") # CHANGED JUST TO GET AN IDEA
-FIGURES_DIR = Path("reports/figures")
+FIGURES_DIR_DRAIN = Path("reports/figures/drain_plots")
+FIGURES_DIR_SEX = Path("reports/figures/sex_plots")
+FIGURES_DIR = Path("reports/figures/")
+
 REPORTS_DIR = Path("reports")
+REPORTS_DIR_DRAIN = Path("reports/drain")
+REPORTS_DIR_SEX = Path("reports/sex")
 
 # hyperparameters from research project
 NB_EPOCHS = 100
