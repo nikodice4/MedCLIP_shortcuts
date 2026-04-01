@@ -22,7 +22,7 @@ def train_probes(dataset="chestxray"):
     # --------------------- data stuff--------------------- #
     if dataset == "padchest":
         print("Loading PadChest dataset...")
-        full_ds = CostumDataset(config.PADCHEST_DATA_DIR, transform=transform)
+        full_ds = CostumDataset(str(config.PADCHEST_DATA_DIR), transform=transform)
         train_ds, val_ds, test_ds = get_train_val_test_split(full_ds)
         weights_path = config.PADCHEST_WEIGHTS_PATH
     else:
