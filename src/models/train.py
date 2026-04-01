@@ -133,7 +133,7 @@ def train_probes():
         # ------------------------ early stopping ------------------------ #
         print(f"Validation ({len(val_labels)} images)  loss={val_loss/len(val_loader):.4f}  auc={val_auc:.4f}", flush=True)
         if val_loss + config.ES_DELTA < best_val_loss:
-            print(f"Model saved at epoch {epoch+1}")
+            print(f"Model saved at epoch {epoch}") #changed to no + 1 # LATEST RUN STOPPED AT EPOCH 65
             # Save only probe weights (backbone is frozen and not needed)
             config.WEIGHTS_PATH.parent.mkdir(parents=True, exist_ok=True)
             probe_state = {k: v for k, v in model.state_dict().items() if "probe" in k}
