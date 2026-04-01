@@ -29,6 +29,9 @@ test_preprocess_chestX:
 train_probes:
 	$(PYTHON_INTERPRETER) -m src.models.main
 
+train_probes_padchest:
+	$(PYTHON_INTERPRETER) -m src.models.main --dataset padchest
+
 evaluation:
 	$(PYTHON_INTERPRETER) -m src.models.evaluation
 
@@ -38,7 +41,7 @@ plotting:
 preprocess_padchest:
 	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \
     data/raw/padchest \
-    data/raw/padchest \
+    data/raw/padchest/images \
     data/processed/padchest \
     ""
 

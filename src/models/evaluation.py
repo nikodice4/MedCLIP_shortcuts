@@ -7,7 +7,7 @@ from tqdm import tqdm
 from torch.utils.data import DataLoader
 
 from . import config
-from .datasets import ChestXray, transform
+from ..data.datasets import ChestXray, transform
 from .resnet_probes import FrozenResNetWithProbes
 from .train import DEVICE
 

@@ -1,6 +1,7 @@
 # datasets.py: a script where we define the dataset, image transformations used for training and eval
 
 import pandas as pd
+import glob
 from pathlib import Path
 from PIL import Image
 from torchvision.io import read_image, ImageReadMode
@@ -46,3 +47,47 @@ class ChestXray(Dataset):
             img = self.transform(img)
         
         return img, torch.tensor(self.labels[idx], dtype=torch.long)
+
+
+#Code from Theo basically, but without masking stuff
+class CostumDataset(Dataset):
+    def __init__(self, data_dir, transform=None):
+
+        # path to the image itself
+        self.img_paths = glob.glob(f'{data_dir.removesuffix("/")}/images/*.png')
+
+        # path to the processed labels
+        self.img_labels = pd.read_csv(f'{data_dir.removesuffix("/")}/processed_labels.csv')
+        
+        # Filter labels to only include images that exist
+        self.img_labels = self.img_labels[
+            self.img_labels["ImageID"].isin([p.split("/")[-1] for p in self.img_paths])
+        ].reset_index(drop=True)
+        
+        # Image path so it fits with the imageid
+        self.img_paths = [
+            f"{data_dir.removesuffix('/')}/images/{img_id}" 
+            for img_id in self.img_labels["ImageID"]
+        ]
+        
+        self.labels = self.img_labels["target_label"].astype(int).tolist()
+        self.patient_ids = self.img_labels["PatientID"].tolist()
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.img_paths)
+
+    def __getitem__(self, idx):
+        img_path = self.img_paths[idx]
+        image = read_image(img_path, ImageReadMode.RGB)
+
+        if torch.isnan(image).any() or image.sum() == 0: # added this because some images where black, and it messed up the training
+            return self.__getitem__((idx + 1) % len(self))
+
+
+        image = image / image.max()
+
+        if self.transform:
+            image = self.transform(image)
+
+        return image, torch.tensor(self.labels[idx], dtype=torch.long)

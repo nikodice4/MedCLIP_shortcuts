@@ -9,22 +9,27 @@ from sklearn.metrics import roc_auc_score
 import os
 
 from . import config
-from .datasets import ChestXray, transform
+from ..data.datasets import ChestXray, CostumDataset, transform
 from .resnet_probes import FrozenResNetWithProbes
-from .data_split import get_train_val_split
+from ..data.data_split import get_train_val_split, get_train_val_test_split
 from .checkpointing import checkpoint, resume
 
 torch.manual_seed(42)
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def train_probes():
+def train_probes(dataset="chestxray"):
 
     # --------------------- data stuff--------------------- #
-    # Load full dataset
-    full_ds = ChestXray(config.TRAIN_CSV, config.TRAIN_IMG_DIR, transform=transform)
-
-    # Get the right splits between train
-    train_ds, val_ds = get_train_val_split(full_ds)
+    if dataset == "padchest":
+        print("Loading PadChest dataset...")
+        full_ds = CostumDataset(config.PADCHEST_DATA_DIR, transform=transform)
+        train_ds, val_ds, test_ds = get_train_val_test_split(full_ds)
+        weights_path = config.PADCHEST_WEIGHTS_PATH
+    else:
+        print("Loading ChestX-ray14 dataset...")
+        full_ds = ChestXray(config.TRAIN_CSV, config.TRAIN_IMG_DIR, transform=transform)
+        train_ds, val_ds = get_train_val_split(full_ds)
+        weights_path = config.WEIGHTS_PATH
 
     # Our data is very unbalanced, so we can use weighted random sampelr to train
     train_labels = [full_ds.labels[i] for i in train_ds.indices]
@@ -54,7 +59,7 @@ def train_probes():
     earlystopping_count = 0
 
     os.makedirs('models/checkpoint', exist_ok=True)
-    checkpoint_path = f'models/checkpoint/clip_checkpoint.pth'
+    checkpoint_path = f'models/checkpoint/{dataset}_checkpoint.pth'
 
     start_epoch = 0  # Change this manually to resume (e.g., set to 5 if crashed at epoch 4)
 
@@ -135,9 +140,9 @@ def train_probes():
         if val_loss + config.ES_DELTA < best_val_loss:
             print(f"Model saved at epoch {epoch}") #changed to no + 1 # LATEST RUN STOPPED AT EPOCH 65
             # Save only probe weights (backbone is frozen and not needed)
-            config.WEIGHTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+            weights_path.parent.mkdir(parents=True, exist_ok=True)
             probe_state = {k: v for k, v in model.state_dict().items() if "probe" in k}
-            torch.save(probe_state, config.WEIGHTS_PATH)
+            torch.save(probe_state, weights_path)
 
             best_val_loss = val_loss
             earlystopping_count = 0
@@ -156,6 +161,6 @@ def train_probes():
 
 
     print(f"\nBest val_loss: {best_val_loss:.4f}")
-    print(f"Probe weights saved -> {config.WEIGHTS_PATH}")
+    print(f"Probe weights saved -> {weights_path}")
 
     return train_loss, train_auc, val_loss, val_auc, model
