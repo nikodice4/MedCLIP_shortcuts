@@ -1,0 +1,22 @@
+Makefile:82: warning: overriding recipe for target 'create_environment'
+Makefile:76: warning: ignoring old recipe for target 'create_environment'
+python -m src.models.main --dataset padchest
+The cache for model files in Transformers v4.22.0 has been updated. Migrating your old cache. This is a one-time only operation. You can interrupt this and resume the migration later on by calling `transformers.utils.move_cache()`.
+Moving 0 files to the new cache system
+0it [00:00, ?it/s]0it [00:00, ?it/s]
+Traceback (most recent call last):
+  File "/home/resy/.conda/envs/MedCLIP_subgroup/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/home/resy/.conda/envs/MedCLIP_subgroup/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/resy_nizp/MedCLIP_subgroup/src/models/main.py", line 14, in <module>
+    main()
+  File "/home/resy_nizp/MedCLIP_subgroup/src/models/main.py", line 11, in main
+    train_loss, train_auc, val_loss, val_auc, model = train_probes(dataset=args.dataset)
+  File "/home/resy_nizp/MedCLIP_subgroup/src/models/train.py", line 25, in train_probes
+    full_ds = CostumDataset(config.PADCHEST_DATA_DIR, transform=transform)
+  File "/home/resy_nizp/MedCLIP_subgroup/src/data/datasets.py", line 57, in __init__
+    self.img_paths = glob.glob(f'{data_dir.removesuffix("/")}/images/*.png')
+AttributeError: 'PosixPath' object has no attribute 'removesuffix'
+Loading PadChest dataset...
+make: *** [Makefile:33: train_probes_padchest] Error 1
