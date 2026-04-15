@@ -48,7 +48,7 @@ preprocess_padchest:
     data/processed/PadChest \
     ""
 
-preprocess_px_padchest:
+process_px_padchest:
 	$(PYTHON_INTERPRETER) src/data/process_px_padchest.py \
     data/raw/PadChest \
     data/processed/PadChest \
