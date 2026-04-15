@@ -44,6 +44,9 @@ evaluation_padchest_px:
 plotting:
 	$(PYTHON_INTERPRETER) -m src.models.plotting
 
+plotting_padchest:
+	$(PYTHON_INTERPRETER) -m src.models.plotting_padchest
+
 preprocess_padchest:
 	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \
     data/raw/padchest \
