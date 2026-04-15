@@ -1,0 +1,226 @@
+Makefile:92: warning: overriding recipe for target 'create_environment'
+Makefile:86: warning: ignoring old recipe for target 'create_environment'
+python -m pip install -U pip setuptools wheel
+Requirement already satisfied: pip in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (26.0.1)
+Requirement already satisfied: setuptools in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (82.0.1)
+Requirement already satisfied: wheel in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (0.46.3)
+Requirement already satisfied: packaging>=24.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from wheel) (24.1)
+python -m pip install -r requirements.txt
+Processing ./models/medclip/MedCLIP
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: torch==2.4.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 1)) (2.4.1)
+Requirement already satisfied: torchvision==0.19.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 2)) (0.19.1)
+Requirement already satisfied: numpy in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 4)) (1.26.4)
+Requirement already satisfied: pandas in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 5)) (2.3.3)
+Requirement already satisfied: Pillow in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 6)) (12.1.1)
+Requirement already satisfied: requests in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 7)) (2.32.5)
+Requirement already satisfied: tqdm in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 8)) (4.67.3)
+Requirement already satisfied: wget in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 9)) (3.2)
+Requirement already satisfied: nltk>=3.7 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 10)) (3.9.3)
+Requirement already satisfied: scikit_learn>=1.1.2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 11)) (1.7.2)
+Requirement already satisfied: textaugment>=1.3.4 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 12)) (3.0.0)
+Requirement already satisfied: timm==1.0.9 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 13)) (1.0.9)
+Requirement already satisfied: transformers==4.24.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 14)) (4.24.0)
+Requirement already satisfied: mlflow==2.14.3 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 15)) (2.14.3)
+Requirement already satisfied: cffi==1.17.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 16)) (1.17.1)
+Requirement already satisfied: cloudpickle==3.0.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 17)) (3.0.0)
+Requirement already satisfied: colorama==0.4.6 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 18)) (0.4.6)
+Requirement already satisfied: einops==0.8.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 19)) (0.8.0)
+Requirement already satisfied: ftfy==6.2.3 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 20)) (6.2.3)
+Requirement already satisfied: fvcore==0.1.5.post20221221 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 21)) (0.1.5.post20221221)
+Requirement already satisfied: mup==1.0.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 22)) (1.0.0)
+Requirement already satisfied: packaging==24.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 23)) (24.1)
+Requirement already satisfied: pyyaml==6.0.2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 24)) (6.0.2)
+Requirement already satisfied: sentencepiece==0.2.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 25)) (0.2.0)
+Requirement already satisfied: tenacity==9.0.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 26)) (9.0.0)
+Requirement already satisfied: tornado==6.4.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 27)) (6.4.1)
+Requirement already satisfied: open_clip_torch in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 28)) (2.32.0)
+Requirement already satisfied: matplotlib in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 29)) (3.10.8)
+Requirement already satisfied: hi-ml-multimodal in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 30)) (0.2.2)
+Requirement already satisfied: pydicom==2.1.2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 31)) (2.1.2)
+Requirement already satisfied: omegaconf==2.3.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 32)) (2.3.0)
+Requirement already satisfied: tensorboard==2.13.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 33)) (2.13.0)
+Requirement already satisfied: albumentations==1.3.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 34)) (1.3.1)
+Requirement already satisfied: python-dotenv in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from -r requirements.txt (line 36)) (1.2.2)
+Requirement already satisfied: filelock in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from transformers==4.24.0->-r requirements.txt (line 14)) (3.25.0)
+Requirement already satisfied: huggingface-hub<1.0,>=0.10.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from transformers==4.24.0->-r requirements.txt (line 14)) (0.36.2)
+Requirement already satisfied: regex!=2019.12.17 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from transformers==4.24.0->-r requirements.txt (line 14)) (2026.2.28)
+Requirement already satisfied: tokenizers!=0.11.3,<0.14,>=0.11.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from transformers==4.24.0->-r requirements.txt (line 14)) (0.13.3)
+Requirement already satisfied: typing-extensions>=4.8.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (4.15.0)
+Requirement already satisfied: sympy in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (1.14.0)
+Requirement already satisfied: networkx in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (3.4.2)
+Requirement already satisfied: jinja2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (3.1.6)
+Requirement already satisfied: fsspec in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (2026.2.0)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.1.105 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (12.1.105)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.1.105 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (12.1.105)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.1.105 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (12.1.105)
+Requirement already satisfied: nvidia-cudnn-cu12==9.1.0.70 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (9.1.0.70)
+Requirement already satisfied: nvidia-cublas-cu12==12.1.3.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (12.1.3.1)
+Requirement already satisfied: nvidia-cufft-cu12==11.0.2.54 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (11.0.2.54)
+Requirement already satisfied: nvidia-curand-cu12==10.3.2.106 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (10.3.2.106)
+Requirement already satisfied: nvidia-cusolver-cu12==11.4.5.107 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (11.4.5.107)
+Requirement already satisfied: nvidia-cusparse-cu12==12.1.0.106 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (12.1.0.106)
+Requirement already satisfied: nvidia-nccl-cu12==2.20.5 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (2.20.5)
+Requirement already satisfied: nvidia-nvtx-cu12==12.1.105 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (12.1.105)
+Requirement already satisfied: triton==3.0.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from torch==2.4.1->-r requirements.txt (line 1)) (3.0.0)
+Requirement already satisfied: safetensors in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from timm==1.0.9->-r requirements.txt (line 13)) (0.7.0)
+Requirement already satisfied: Flask<4 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (3.1.3)
+Requirement already satisfied: alembic!=1.10.0,<2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (1.18.4)
+Requirement already satisfied: cachetools<6,>=5.0.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (5.5.2)
+Requirement already satisfied: click<9,>=7.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (8.3.1)
+Requirement already satisfied: docker<8,>=4.0.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (7.1.0)
+Requirement already satisfied: entrypoints<1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (0.4)
+Requirement already satisfied: gitpython<4,>=3.1.9 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (3.1.46)
+Requirement already satisfied: graphene<4 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (3.4.3)
+Requirement already satisfied: importlib-metadata!=4.7.0,<8,>=3.7.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (7.2.1)
+Requirement already satisfied: markdown<4,>=3.3 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (3.10.2)
+Requirement already satisfied: opentelemetry-api<3,>=1.9.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (1.40.0)
+Requirement already satisfied: opentelemetry-sdk<3,>=1.9.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (1.40.0)
+Requirement already satisfied: protobuf<5,>=3.12.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (4.25.8)
+Requirement already satisfied: pyarrow<16,>=4.0.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (15.0.2)
+Requirement already satisfied: pytz<2025 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (2024.2)
+Requirement already satisfied: querystring-parser<2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (1.2.4)
+Requirement already satisfied: scipy<2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (1.15.3)
+Requirement already satisfied: sqlalchemy<3,>=1.4.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (2.0.48)
+Requirement already satisfied: sqlparse<1,>=0.4.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (0.5.5)
+Requirement already satisfied: gunicorn<23 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mlflow==2.14.3->-r requirements.txt (line 15)) (22.0.0)
+Requirement already satisfied: pycparser in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from cffi==1.17.1->-r requirements.txt (line 16)) (3.0)
+Requirement already satisfied: wcwidth<0.3.0,>=0.2.12 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from ftfy==6.2.3->-r requirements.txt (line 20)) (0.2.14)
+Requirement already satisfied: yacs>=0.1.6 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from fvcore==0.1.5.post20221221->-r requirements.txt (line 21)) (0.1.8)
+Requirement already satisfied: termcolor>=1.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from fvcore==0.1.5.post20221221->-r requirements.txt (line 21)) (3.3.0)
+Requirement already satisfied: tabulate in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from fvcore==0.1.5.post20221221->-r requirements.txt (line 21)) (0.10.0)
+Requirement already satisfied: iopath>=0.1.7 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from fvcore==0.1.5.post20221221->-r requirements.txt (line 21)) (0.1.10)
+Requirement already satisfied: seaborn in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from mup==1.0.0->-r requirements.txt (line 22)) (0.13.2)
+Requirement already satisfied: antlr4-python3-runtime==4.9.* in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from omegaconf==2.3.0->-r requirements.txt (line 32)) (4.9.3)
+Requirement already satisfied: absl-py>=0.4 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from tensorboard==2.13.0->-r requirements.txt (line 33)) (2.4.0)
+Requirement already satisfied: grpcio>=1.48.2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from tensorboard==2.13.0->-r requirements.txt (line 33)) (1.78.0)
+Requirement already satisfied: google-auth<3,>=1.6.3 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from tensorboard==2.13.0->-r requirements.txt (line 33)) (2.48.0)
+Requirement already satisfied: google-auth-oauthlib<1.1,>=0.5 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from tensorboard==2.13.0->-r requirements.txt (line 33)) (1.0.0)
+Requirement already satisfied: setuptools>=41.0.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from tensorboard==2.13.0->-r requirements.txt (line 33)) (82.0.1)
+Requirement already satisfied: tensorboard-data-server<0.8.0,>=0.7.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from tensorboard==2.13.0->-r requirements.txt (line 33)) (0.7.2)
+Requirement already satisfied: werkzeug>=1.0.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from tensorboard==2.13.0->-r requirements.txt (line 33)) (3.1.6)
+Requirement already satisfied: wheel>=0.26 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from tensorboard==2.13.0->-r requirements.txt (line 33)) (0.46.3)
+Requirement already satisfied: scikit-image>=0.16.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from albumentations==1.3.1->-r requirements.txt (line 34)) (0.25.2)
+Requirement already satisfied: qudida>=0.0.4 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from albumentations==1.3.1->-r requirements.txt (line 34)) (0.0.4)
+Requirement already satisfied: opencv-python-headless>=4.1.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from albumentations==1.3.1->-r requirements.txt (line 34)) (4.11.0.86)
+Requirement already satisfied: nvidia-nvjitlink-cu12 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from nvidia-cusolver-cu12==11.4.5.107->torch==2.4.1->-r requirements.txt (line 1)) (12.9.86)
+Requirement already satisfied: python-dateutil>=2.8.2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 5)) (2.9.0.post0)
+Requirement already satisfied: tzdata>=2022.7 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 5)) (2025.3)
+Requirement already satisfied: charset_normalizer<4,>=2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from requests->-r requirements.txt (line 7)) (3.4.5)
+Requirement already satisfied: idna<4,>=2.5 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from requests->-r requirements.txt (line 7)) (3.11)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from requests->-r requirements.txt (line 7)) (2.6.3)
+Requirement already satisfied: certifi>=2017.4.17 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from requests->-r requirements.txt (line 7)) (2026.2.25)
+Requirement already satisfied: joblib>=1.2.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from scikit_learn>=1.1.2->-r requirements.txt (line 11)) (1.5.3)
+Requirement already satisfied: threadpoolctl>=3.1.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from scikit_learn>=1.1.2->-r requirements.txt (line 11)) (3.6.0)
+Requirement already satisfied: contourpy>=1.0.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 29)) (1.3.2)
+Requirement already satisfied: cycler>=0.10 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 29)) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 29)) (4.61.1)
+Requirement already satisfied: kiwisolver>=1.3.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 29)) (1.4.9)
+Requirement already satisfied: pyparsing>=3 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 29)) (3.3.2)
+Requirement already satisfied: Mako in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from alembic!=1.10.0,<2->mlflow==2.14.3->-r requirements.txt (line 15)) (1.3.10)
+Requirement already satisfied: tomli in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from alembic!=1.10.0,<2->mlflow==2.14.3->-r requirements.txt (line 15)) (2.4.0)
+Requirement already satisfied: blinker>=1.9.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from Flask<4->mlflow==2.14.3->-r requirements.txt (line 15)) (1.9.0)
+Requirement already satisfied: itsdangerous>=2.2.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from Flask<4->mlflow==2.14.3->-r requirements.txt (line 15)) (2.2.0)
+Requirement already satisfied: markupsafe>=2.1.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from Flask<4->mlflow==2.14.3->-r requirements.txt (line 15)) (3.0.3)
+Requirement already satisfied: gitdb<5,>=4.0.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from gitpython<4,>=3.1.9->mlflow==2.14.3->-r requirements.txt (line 15)) (4.0.12)
+Requirement already satisfied: smmap<6,>=3.0.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from gitdb<5,>=4.0.1->gitpython<4,>=3.1.9->mlflow==2.14.3->-r requirements.txt (line 15)) (5.0.2)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from google-auth<3,>=1.6.3->tensorboard==2.13.0->-r requirements.txt (line 33)) (0.4.2)
+Requirement already satisfied: cryptography>=38.0.3 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from google-auth<3,>=1.6.3->tensorboard==2.13.0->-r requirements.txt (line 33)) (46.0.0)
+Requirement already satisfied: rsa<5,>=3.1.4 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from google-auth<3,>=1.6.3->tensorboard==2.13.0->-r requirements.txt (line 33)) (4.9.1)
+Requirement already satisfied: requests-oauthlib>=0.7.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from google-auth-oauthlib<1.1,>=0.5->tensorboard==2.13.0->-r requirements.txt (line 33)) (2.0.0)
+Requirement already satisfied: graphql-core<3.3,>=3.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from graphene<4->mlflow==2.14.3->-r requirements.txt (line 15)) (3.2.8)
+Requirement already satisfied: graphql-relay<3.3,>=3.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from graphene<4->mlflow==2.14.3->-r requirements.txt (line 15)) (3.2.0)
+Requirement already satisfied: hf-xet<2.0.0,>=1.1.3 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from huggingface-hub<1.0,>=0.10.0->transformers==4.24.0->-r requirements.txt (line 14)) (1.3.2)
+Requirement already satisfied: zipp>=0.5 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from importlib-metadata!=4.7.0,<8,>=3.7.0->mlflow==2.14.3->-r requirements.txt (line 15)) (3.23.0)
+Requirement already satisfied: opentelemetry-semantic-conventions==0.61b0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from opentelemetry-sdk<3,>=1.9.0->mlflow==2.14.3->-r requirements.txt (line 15)) (0.61b0)
+Requirement already satisfied: six>=1.5 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from python-dateutil>=2.8.2->pandas->-r requirements.txt (line 5)) (1.17.0)
+Requirement already satisfied: pyasn1>=0.1.3 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from rsa<5,>=3.1.4->google-auth<3,>=1.6.3->tensorboard==2.13.0->-r requirements.txt (line 33)) (0.6.2)
+Requirement already satisfied: greenlet>=1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from sqlalchemy<3,>=1.4.0->mlflow==2.14.3->-r requirements.txt (line 15)) (3.3.2)
+Requirement already satisfied: gensim>=4.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from textaugment>=1.3.4->-r requirements.txt (line 12)) (4.4.0)
+Requirement already satisfied: googletrans>=4.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from textaugment>=1.3.4->-r requirements.txt (line 12)) (4.0.2)
+Requirement already satisfied: asyncio in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from textaugment>=1.3.4->-r requirements.txt (line 12)) (4.0.0)
+Requirement already satisfied: nest-asyncio in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from textaugment>=1.3.4->-r requirements.txt (line 12)) (1.6.0)
+Requirement already satisfied: SimpleITK in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from hi-ml-multimodal->-r requirements.txt (line 30)) (2.5.3)
+Requirement already satisfied: smart_open>=1.8.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from gensim>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (7.5.1)
+Requirement already satisfied: httpx>=0.27.2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from httpx[http2]>=0.27.2->googletrans>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (0.28.1)
+Requirement already satisfied: anyio in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from httpx>=0.27.2->httpx[http2]>=0.27.2->googletrans>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (4.12.1)
+Requirement already satisfied: httpcore==1.* in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from httpx>=0.27.2->httpx[http2]>=0.27.2->googletrans>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (1.0.9)
+Requirement already satisfied: h11>=0.16 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from httpcore==1.*->httpx>=0.27.2->httpx[http2]>=0.27.2->googletrans>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (0.16.0)
+Requirement already satisfied: h2<5,>=3 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from httpx[http2]>=0.27.2->googletrans>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (4.3.0)
+Requirement already satisfied: hyperframe<7,>=6.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from h2<5,>=3->httpx[http2]>=0.27.2->googletrans>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (6.1.0)
+Requirement already satisfied: hpack<5,>=4.1 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from h2<5,>=3->httpx[http2]>=0.27.2->googletrans>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (4.1.0)
+Requirement already satisfied: portalocker in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from iopath>=0.1.7->fvcore==0.1.5.post20221221->-r requirements.txt (line 21)) (3.2.0)
+Requirement already satisfied: oauthlib>=3.0.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<1.1,>=0.5->tensorboard==2.13.0->-r requirements.txt (line 33)) (3.3.1)
+Requirement already satisfied: imageio!=2.35.0,>=2.33 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from scikit-image>=0.16.1->albumentations==1.3.1->-r requirements.txt (line 34)) (2.37.2)
+Requirement already satisfied: tifffile>=2022.8.12 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from scikit-image>=0.16.1->albumentations==1.3.1->-r requirements.txt (line 34)) (2025.5.10)
+Requirement already satisfied: lazy-loader>=0.4 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from scikit-image>=0.16.1->albumentations==1.3.1->-r requirements.txt (line 34)) (0.4)
+Requirement already satisfied: wrapt in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from smart_open>=1.8.1->gensim>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (2.1.2)
+Requirement already satisfied: exceptiongroup>=1.0.2 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from anyio->httpx>=0.27.2->httpx[http2]>=0.27.2->googletrans>=4.0->textaugment>=1.3.4->-r requirements.txt (line 12)) (1.3.1)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /home/nizp/.conda/envs/MedCLIP_subgroup/lib/python3.10/site-packages (from sympy->torch==2.4.1->-r requirements.txt (line 1)) (1.3.0)
+Building wheels for collected packages: MedCLIP
+  Building wheel for MedCLIP (pyproject.toml): started
+  Building wheel for MedCLIP (pyproject.toml): finished with status 'done'
+  Created wheel for MedCLIP: filename=medclip-0.0.3-py3-none-any.whl size=28062 sha256=aa37baa8326915c4498d36253add54ac68af7f50b7677597dd4cd52436ccdd48
+  Stored in directory: /tmp/pip-ephem-wheel-cache-_ts320ov/wheels/73/db/34/26921faa9f460eaa6f5221b0c3ae7e3a82f2e14562730ce830
+Successfully built MedCLIP
+Installing collected packages: MedCLIP
+  Attempting uninstall: MedCLIP
+    Found existing installation: MedCLIP 0.0.3
+    Uninstalling MedCLIP-0.0.3:
+      Successfully uninstalled MedCLIP-0.0.3
+Successfully installed MedCLIP-0.0.3
+Makefile:92: warning: overriding recipe for target 'create_environment'
+Makefile:86: warning: ignoring old recipe for target 'create_environment'
+python src/data/process_px_padchest.py \
+    data/raw/padchest \
+    data/processed/padchest \
+    ""
+2026-04-15 14:33:50,000 - __main__ - INFO - making padchest pneumothorax data set from raw data
+2026-04-15 14:33:50,000 - __main__ - INFO - Processing labels and store the result in ./data/processed/padchest/processed_labels_px.csv
+/home/resy_nizp/MedCLIP_subgroup/src/data/process_px_padchest.py:50: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_view["PatientBirth"] = pd.to_datetime(df_view["PatientBirth"], format="%Y").dt.year
+/home/resy_nizp/MedCLIP_subgroup/src/data/process_px_padchest.py:51: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_view["StudyDate_DICOM"] = pd.to_datetime(df_view["StudyDate_DICOM"], format="%Y%m%d").dt.strftime("%d-%m-%Y")
+/home/resy_nizp/MedCLIP_subgroup/src/data/process_px_padchest.py:52: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_view["study_year"] = pd.to_datetime(df_view["StudyDate_DICOM"], format="%d-%m-%Y").dt.year
+/home/resy_nizp/MedCLIP_subgroup/src/data/process_px_padchest.py:53: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_view["age"] = df_view["study_year"] - df_view["PatientBirth"]
+/home/resy_nizp/MedCLIP_subgroup/src/data/process_px_padchest.py:69: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_view['Labels'] = stripped_lowercased_labels
+/home/resy_nizp/MedCLIP_subgroup/src/data/process_px_padchest.py:79: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_view["target_label"] = binary
+2026-04-15 14:34:06,691 - __main__ - INFO - Dataset is ready to be used!
+!!!!!!!!!!!!!!!!!!!!!!!/home/resy_nizp/MedCLIP_subgroup
+!!!!!!!!!!!!!!!!!!!!!!!shape of the base_df: (160861, 35)
+!!!!!!!!!!!!!!!!!!!!!!!the nans in df_no_nan: 103
+!!!!!!!!!!!!!!!!!!!!!!!the nans in df_no_nan: 0
+!!!!!!!!!!!!!!!!!!!!!!!shape of the base_df after processing: (108094, 38)
