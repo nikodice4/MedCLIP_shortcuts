@@ -64,7 +64,7 @@ def train_probes(dataset="chestxray", label="cardiomegaly"):
     earlystopping_count = 0
 
     os.makedirs('models/checkpoint', exist_ok=True)
-    checkpoint_path = f'models/checkpoint/{dataset}_checkpoint.pth'
+    checkpoint_path = f'models/checkpoint/{dataset}_{label}_checkpoint.pth'
 
     start_epoch = 0  # Change this manually to resume (e.g., set to 5 if crashed at epoch 4)
 
