@@ -30,7 +30,7 @@ train_probes:
 	$(PYTHON_INTERPRETER) -m src.models.main
 
 train_probes_padchest:
-	$(PYTHON_INTERPRETER) -m src.models.main --dataset padchest
+	$(PYTHON_INTERPRETER) -m src.models.main --dataset padchest --label $(label)
 
 evaluation:
 	$(PYTHON_INTERPRETER) -m src.models.evaluation

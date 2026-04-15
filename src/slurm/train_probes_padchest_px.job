@@ -18,4 +18,4 @@ source activate MedCLIP_subgroup
 
 #cd src/data
 
-make train_probes_padchest label=cardiomegaly
+make train_probes_padchest label=pneumothorax

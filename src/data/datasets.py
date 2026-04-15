@@ -51,13 +51,17 @@ class ChestXray(Dataset):
 
 #Code from Theo basically, but without masking stuff
 class CostumDataset(Dataset):
-    def __init__(self, data_dir, transform=None):
+    def __init__(self, data_dir, transform=None, label="cardiomegaly"):
 
         # path to the image itself
         self.img_paths = glob.glob(f'{data_dir.removesuffix("/")}/images/*.png')
 
         # path to the processed labels
-        self.img_labels = pd.read_csv(f'{data_dir.removesuffix("/")}/processed_labels.csv')
+        if label == "pneumothorax":
+            self.img_labels = pd.read_csv(f'{data_dir.removesuffix("/")}/processed_labels_px.csv')
+        else:
+            self.img_labels = pd.read_csv(f'{data_dir.removesuffix("/")}/processed_labels.csv')
+            
         
         # Filter labels to only include images that exist
         self.img_labels = self.img_labels[
