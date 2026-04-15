@@ -13,7 +13,7 @@ from ..data.data_split import get_train_val_test_split
 
 def evaluate_padchest():
     # --------------------- data --------------------- #
-    full_ds = CostumDataset(str(config.PADCHEST_DATA_DIR), transform=transform)
+    full_ds = CostumDataset(str(config.PADCHEST_DATA_DIR), transform=transform, label="pneumothorax")
     train_ds, _, test_ds = get_train_val_test_split(full_ds)
 
     print(f"Train: {len(train_ds)} samples. Test: {len(test_ds)} samples")
@@ -23,7 +23,7 @@ def evaluate_padchest():
     y_filenames = [full_ds.img_paths[i].split("/")[-1] for i in test_indices]
 
     # Read full CSV for subgroup metadata
-    df = pd.read_csv(config.PADCHEST_DATA_DIR / "processed_labels.csv")
+    df = pd.read_csv(config.PADCHEST_DATA_DIR / "processed_labels_px.csv")
 
     ################### scanner ###################
     scanner_def = dict(zip(df["ImageID"], df["Manufacturer_DICOM"]))
@@ -40,7 +40,7 @@ def evaluate_padchest():
 
     # --------------------- load model --------------------- #
     model = FrozenResNetWithProbes(num_classes=2).to(DEVICE)
-    probe_state = torch.load(config.PADCHEST_WEIGHTS_PATH, map_location=DEVICE)
+    probe_state = torch.load(config.PADCHEST_PX_WEIGHTS_PATH, map_location=DEVICE)
     model.load_state_dict(probe_state, strict=False)  # strict=False: backbone not in file
     model.eval()
 
@@ -88,15 +88,15 @@ def evaluate_padchest():
     print(f"calibration data: done, ({len(y_true)} images)", flush=True)
 
     # --------------------- save csvs --------------------- #
-    config.REPORTS_DIR_PADCHEST.mkdir(parents=True, exist_ok=True)
-    config.REPORTS_DIR_PADCHEST_SCANNER.mkdir(parents=True, exist_ok=True)
-    config.REPORTS_DIR_PADCHEST_SEX.mkdir(parents=True, exist_ok=True)
+    config.REPORTS_DIR_PADCHEST_PX.mkdir(parents=True, exist_ok=True)
+    config.REPORTS_DIR_PADCHEST_SCANNER_PX.mkdir(parents=True, exist_ok=True)
+    config.REPORTS_DIR_PADCHEST_SEX_PX.mkdir(parents=True, exist_ok=True)
 
-    train_prob_path = config.REPORTS_DIR_PADCHEST / "mean_probability_per_layer_train.csv"
+    train_prob_path = config.REPORTS_DIR_PADCHEST_PX / "mean_probability_per_layer_train.csv"
     pd.DataFrame([{"layer": i + 1, "mean_probability": p} for i, p in enumerate(train_mean_probs)]
                  ).to_csv(train_prob_path, index=False)
 
-    test_prob_path = config.REPORTS_DIR_PADCHEST / "mean_probability_per_layer_test.csv"
+    test_prob_path = config.REPORTS_DIR_PADCHEST_PX / "mean_probability_per_layer_test.csv"
     pd.DataFrame([{"layer": i + 1, "mean_probability": p} for i, p in enumerate(test_mean_probs)]
                  ).to_csv(test_prob_path, index=False)
 
@@ -104,7 +104,7 @@ def evaluate_padchest():
     print(f"saved full test -> {test_prob_path}")
 
     ################### scanner ###################
-    calib_path = config.REPORTS_DIR_PADCHEST_SCANNER / "calibration_scanner.csv"
+    calib_path = config.REPORTS_DIR_PADCHEST_SCANNER_PX / "calibration_scanner.csv"
     pd.DataFrame({"y_true": y_true, "y_prob": y_prob, "scanner": y_scanner}).to_csv(calib_path, index=False)
     print(f"saved calibration path -> {calib_path}")
 
@@ -128,12 +128,12 @@ def evaluate_padchest():
         rows_a.append({"layer": layer_idx + 1, "mean_probability": mean_a})
         rows_b.append({"layer": layer_idx + 1, "mean_probability": mean_b})
 
-    pd.DataFrame(rows_a).to_csv(config.REPORTS_DIR_PADCHEST_SCANNER / f"mean_probability_per_layer_{scanner_a}.csv", index=False)
-    pd.DataFrame(rows_b).to_csv(config.REPORTS_DIR_PADCHEST_SCANNER / f"mean_probability_per_layer_{scanner_b}.csv", index=False)
+    pd.DataFrame(rows_a).to_csv(config.REPORTS_DIR_PADCHEST_SCANNER_PX / f"mean_probability_per_layer_{scanner_a}.csv", index=False)
+    pd.DataFrame(rows_b).to_csv(config.REPORTS_DIR_PADCHEST_SCANNER_PX / f"mean_probability_per_layer_{scanner_b}.csv", index=False)
 
     print(f"saved scanner subgroup mean probs")
 
-    calib_path_sex = config.REPORTS_DIR_PADCHEST_SEX / "calibration_sex.csv"
+    calib_path_sex = config.REPORTS_DIR_PADCHEST_SEX_PX / "calibration_sex.csv"
     pd.DataFrame({"y_true": y_true, "y_prob": y_prob, "sex": y_sex}).to_csv(calib_path_sex, index=False)
     print(f"saved calibration path -> {calib_path_sex}")
 
@@ -147,8 +147,8 @@ def evaluate_padchest():
         female_rows.append({"layer": layer_idx + 1, "mean_probability": female_mean})
         male_rows.append({"layer": layer_idx + 1, "mean_probability": male_mean})
 
-    pd.DataFrame(female_rows).to_csv(config.REPORTS_DIR_PADCHEST_SEX / "mean_probability_per_layer_female.csv", index=False)
-    pd.DataFrame(male_rows).to_csv(config.REPORTS_DIR_PADCHEST_SEX / "mean_probability_per_layer_male.csv", index=False)
+    pd.DataFrame(female_rows).to_csv(config.REPORTS_DIR_PADCHEST_SEX_PX / "mean_probability_per_layer_female.csv", index=False)
+    pd.DataFrame(male_rows).to_csv(config.REPORTS_DIR_PADCHEST_SEX_PX / "mean_probability_per_layer_male.csv", index=False)
     ################### GENDER ###################
 
 
