@@ -16,7 +16,7 @@ cd /home/resy_nizp/MedCLIP_subgroup
 
 source activate MedCLIP_subgroup
 
-make requirements
+# make requirements
 
 #cd src/data
 
