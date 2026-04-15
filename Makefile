@@ -43,15 +43,15 @@ plotting:
 
 preprocess_padchest:
 	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \
-    data/raw/PadChest \
-    data/raw/PadChest/images \
-    data/processed/PadChest \
+    data/raw/padchest \
+    data/raw/padchest/images \
+    data/processed/padchest \
     ""
 
 process_px_padchest:
 	$(PYTHON_INTERPRETER) src/data/process_px_padchest.py \
-    data/raw/PadChest \
-    data/processed/PadChest \
+    data/raw/padchest \
+    data/processed/padchest \
     ""
 
 
