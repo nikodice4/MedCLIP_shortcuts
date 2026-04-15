@@ -37,19 +37,19 @@ REPORTS_DIR_PADCHEST_SEX_PX = Path("reports/padchest_px/padchest_sex_px")
 
 
 ########### CHESTX FIGURES
-FIGURES_DIR = Path("reports/figures_chestx/")
-FIGURES_DIR_DRAIN = Path("reports/figures_chestx/drain_plots")
-FIGURES_DIR_SEX = Path("reports/figures_chestx/sex_plots")
+FIGURES_DIR = Path("reports/figures/chestx/")
+FIGURES_DIR_DRAIN = Path("reports/figures/chestx/drain_plots")
+FIGURES_DIR_SEX = Path("reports/figures/chestx/sex_plots")
 
 ########### PADCHEST FIGURES
-FIGURES_DIR_PADCHEST = Path("reports/figures_padchest/")
-FIGURES_DIR_PADCHEST_SCANNER = Path("reports/figures_padchest/scanner_plots")
-FIGURES_DIR_PADCHEST_SEX = Path("reports/figures_padchest/sex_plots")
+FIGURES_DIR_PADCHEST = Path("reports/figures/padchest/")
+FIGURES_DIR_PADCHEST_SCANNER = Path("reports/figures/padchest/scanner_plots")
+FIGURES_DIR_PADCHEST_SEX = Path("reports/figures/padchest/sex_plots")
 
 ########### PADCHEST PNEUMOTHORAX FIGURES
-FIGURES_DIR_PADCHEST_PX = Path("reports/figures_padchest_px/")
-FIGURES_DIR_PADCHEST_SCANNER_PX = Path("reports/figures_padchest_px/scanner_plots_px")
-FIGURES_DIR_PADCHEST_SEX_PX = Path("reports/figures_padchest_px/sex_plots_px")
+FIGURES_DIR_PADCHEST_PX = Path("reports/figures/padchest_px/")
+FIGURES_DIR_PADCHEST_SCANNER_PX = Path("reports/figures/padchest_px/scanner_plots_px")
+FIGURES_DIR_PADCHEST_SEX_PX = Path("reports/figures/padchest_px/sex_plots_px")
 
 
 # hyperparameters from research project
