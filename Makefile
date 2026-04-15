@@ -43,10 +43,17 @@ plotting:
 
 preprocess_padchest:
 	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \
-    data/raw/padchest \
-    data/raw/padchest/images \
-    data/processed/padchest \
+    data/raw/PadChest \
+    data/raw/PadChest/images \
+    data/processed/PadChest \
     ""
+
+preprocess_px_padchest:
+	$(PYTHON_INTERPRETER) src/data/process_px_padchest.py \
+    data/raw/PadChest \
+    data/processed/PadChest \
+    ""
+
 
 # run_medclip:
 # 	$(PYTHON_INTERPRETER) src/models/model.py
