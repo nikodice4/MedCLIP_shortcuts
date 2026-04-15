@@ -23,6 +23,8 @@ FIGURES_DIR = Path("reports/figures/")
 REPORTS_DIR = Path("reports")
 REPORTS_DIR_DRAIN = Path("reports/drain")
 REPORTS_DIR_SEX = Path("reports/sex")
+REPORTS_DIR_SCANNER = Path("reports/padchest_scanner")
+REPORTS_DIR_PADCHEST_SEX = Path("reports/padchest_sex")
 
 # hyperparameters from research project
 NB_EPOCHS = 100

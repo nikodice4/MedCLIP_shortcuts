@@ -36,7 +36,7 @@ evaluation:
 	$(PYTHON_INTERPRETER) -m src.models.evaluation
 
 evaluation_padchest:
-	$(PYTHON_INTERPRETER) -m src.models.evaluation --dataset padchest
+	$(PYTHON_INTERPRETER) -m src.models.evaluation_padchest
 
 plotting:
 	$(PYTHON_INTERPRETER) -m src.models.plotting
