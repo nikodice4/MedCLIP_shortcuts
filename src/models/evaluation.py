@@ -56,7 +56,8 @@ def evaluate():
                 prob = logit.softmax(dim=1)[:, 1]  # P(pneumothorax)
                 train_mean_probs[i].extend(prob.cpu().tolist())
 
-    train_mean_probs = [np.mean(p) for p in train_mean_probs]
+    # train_mean_probs = [np.mean(p) for p in train_mean_probs]
+    train_mean_probs = [np.mean([abs(p - 0.5) for p in probs]) for probs in train_mean_probs]
     print(f"mean probabilities for train: done", flush=True)
 
     # --------------------- collect mean probability per layer (test) --------------------- #
@@ -71,7 +72,9 @@ def evaluate():
                 prob = logit.softmax(dim=1)[:, 1]  # P(pneumothorax)
                 test_all_probs[i].extend(prob.cpu().tolist())
 
-    test_mean_probs = [np.mean(p) for p in test_all_probs]
+    # test_mean_probs = [np.mean(p) for p in test_all_probs]
+    test_mean_probs = [np.mean([abs(p - 0.5) for p in probs]) for probs in test_all_probs]
+
     print(f"mean probabilities for test: done", flush=True)
 
     # --------------------- collect calibration data --------------------- #
@@ -125,8 +128,10 @@ def evaluate():
     nodrain_rows = []
 
     for layer_idx, probs in enumerate(test_all_probs):
-        drain_mean = np.mean([probs[i] for i in drain])
-        nodrain_mean = np.mean([probs[i] for i in no_drain])
+        # drain_mean = np.mean([probs[i] for i in drain])
+        # nodrain_mean = np.mean([probs[i] for i in no_drain])
+        drain_mean = np.mean([abs(probs[i] - 0.5) for i in drain]) # BOLAND WAY
+        nodrain_mean = np.mean([abs(probs[i] - 0.5) for i in no_drain]) # BOLAND WAY
         drain_rows.append({"layer": layer_idx + 1, "mean_probability": drain_mean})
         nodrain_rows.append({"layer": layer_idx + 1, "mean_probability": nodrain_mean})
 
@@ -139,8 +144,10 @@ def evaluate():
     male_rows = []
 
     for layer_idx, probs in enumerate(test_all_probs):
-        female_mean = np.mean([probs[i] for i in female])
-        male_mean = np.mean([probs[i] for i in male])
+        female_mean = np.mean([abs(probs[i] - 0.5) for i in female]) # BOLAND WAY
+        male_mean = np.mean([abs(probs[i] - 0.5) for i in male]) # BOLAND WAY
+        # female_mean = np.mean([probs[i] for i in female])
+        # male_mean = np.mean([probs[i] for i in male])
         female_rows.append({"layer": layer_idx + 1, "mean_probability": female_mean})
         male_rows.append({"layer": layer_idx + 1, "mean_probability": male_mean})
 

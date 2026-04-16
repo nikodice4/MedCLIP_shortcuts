@@ -21,7 +21,7 @@ def plot_confidence():
     for name, (filename, reports_dir, figures_dir) in overall_data.items():
         df = pd.read_csv(reports_dir / filename)
         # confidence defined at 0.5
-        df["confidence"] = (df["mean_probability"] - 0.5).abs()
+        # df["confidence"] = (df["mean_probability"] - 0.5).abs()
         ax.plot(df["layer"], df["confidence"], label=name, marker="o")
         # ax.plot(test_df["layer"],  test_df["confidence"],  label="Test",  marker="o")
         # ax.plot(drain_df["layer"],  drain_df["confidence"],  label="Drains",  marker="o")
@@ -37,7 +37,7 @@ def plot_confidence():
     plt.tight_layout()
 
     out_path = figures_dir / f"confidence_per_layer_{name}.png"
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=300)
     print(f"saved confidence overall (chestx) -> {out_path}")
 
     ############### SEX PLOTS COMBINED
@@ -49,7 +49,7 @@ def plot_confidence():
     fig, ax = plt.subplots(figsize=(8, 5))
     for label, (filename, reports_dir, figures_dir) in sex_data.items():
         df = pd.read_csv(reports_dir / filename)
-        df["confidence"] = (df["mean_probability"] - 0.5).abs()
+        # df["confidence"] = (df["mean_probability"] - 0.5).abs()
         ax.plot(df["layer"], df["confidence"], label=label, marker="o")
 
     ax.set_xlabel("Layer")
@@ -63,7 +63,7 @@ def plot_confidence():
     plt.tight_layout()
 
     out_path = figures_dir / f"confidence_per_layer_{name}.png"
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=300)
     print(f"saved confidence sex (chestx) -> {out_path}")
 
     ############### DRAIN PLOTS COMBINED
@@ -75,7 +75,7 @@ def plot_confidence():
     fig, ax = plt.subplots(figsize=(8, 5))
     for label, (filename, reports_dir, figures_dir) in drain_data.items():
         df = pd.read_csv(reports_dir / filename)
-        df["confidence"] = (df["mean_probability"] - 0.5).abs()
+        # df["confidence"] = (df["mean_probability"] - 0.5).abs()
         ax.plot(df["layer"], df["confidence"], label=label, marker="o")
 
     ax.set_xlabel("Layer")
@@ -89,7 +89,7 @@ def plot_confidence():
     plt.tight_layout()
 
     out_path = figures_dir / f"confidence_per_layer_{name}.png"
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=300)
     print(f"saved confidence drains (chestx) -> {out_path}")
 
 ############### PADCHEST CARDIOMGELY
@@ -107,7 +107,7 @@ def plot_confidence_padchest():
     for name, (filename, reports_dir, figures_dir) in overall_data.items():
         df = pd.read_csv(reports_dir / filename)
         # confidence defined at 0.5
-        df["confidence"] = (df["mean_probability"] - 0.5).abs()
+        # df["confidence"] = (df["mean_probability"] - 0.5).abs()
         ax.plot(df["layer"], df["confidence"], label=name, marker="o")
         # ax.plot(test_df["layer"],  test_df["confidence"],  label="Test",  marker="o")
         # ax.plot(drain_df["layer"],  drain_df["confidence"],  label="Drains",  marker="o")
@@ -123,7 +123,7 @@ def plot_confidence_padchest():
     plt.tight_layout()
 
     out_path = figures_dir / f"confidence_per_layer_{name}.png"
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=300)
     print(f"saved confidence overall (padchest) -> {out_path}")
 
     ############### SEX PLOTS COMBINED
@@ -135,7 +135,7 @@ def plot_confidence_padchest():
     fig, ax = plt.subplots(figsize=(8, 5))
     for label, (filename, reports_dir, figures_dir) in sex_data.items():
         df = pd.read_csv(reports_dir / filename)
-        df["confidence"] = (df["mean_probability"] - 0.5).abs()
+        # df["confidence"] = (df["mean_probability"] - 0.5).abs()
         ax.plot(df["layer"], df["confidence"], label=label, marker="o")
 
     ax.set_xlabel("Layer")
@@ -149,7 +149,7 @@ def plot_confidence_padchest():
     plt.tight_layout()
 
     out_path = figures_dir / f"confidence_per_layer_{name}.png"
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=300)
     print(f"saved confidence sex (padchest) -> {out_path}")
 
     ############### SCANNER PLOTS COMBINED
@@ -161,7 +161,7 @@ def plot_confidence_padchest():
     fig, ax = plt.subplots(figsize=(8, 5))
     for label, (filename, reports_dir, figures_dir) in scanner_data.items():
         df = pd.read_csv(reports_dir / filename)
-        df["confidence"] = (df["mean_probability"] - 0.5).abs()
+        # df["confidence"] = (df["mean_probability"] - 0.5).abs()
         ax.plot(df["layer"], df["confidence"], label=label, marker="o")
 
     ax.set_xlabel("Layer")
@@ -175,7 +175,7 @@ def plot_confidence_padchest():
     plt.tight_layout()
 
     out_path = figures_dir / f"confidence_per_layer_{name}.png"
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=300)
     print(f"saved confidence scanner (padchest) -> {out_path}")
 
 ############### PADCHEST PNEUMOTHORAX
@@ -193,7 +193,7 @@ def plot_confidence_padchest_px():
     for name, (filename, reports_dir, figures_dir) in overall_data.items():
         df = pd.read_csv(reports_dir / filename)
         # confidence defined at 0.5
-        df["confidence"] = (df["mean_probability"] - 0.5).abs()
+        # df["confidence"] = (df["mean_probability"] - 0.5).abs()
         ax.plot(df["layer"], df["confidence"], label=name, marker="o")
         # ax.plot(test_df["layer"],  test_df["confidence"],  label="Test",  marker="o")
         # ax.plot(drain_df["layer"],  drain_df["confidence"],  label="Drains",  marker="o")
@@ -209,7 +209,7 @@ def plot_confidence_padchest_px():
     plt.tight_layout()
 
     out_path = figures_dir / f"confidence_per_layer_{name}.png"
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=300)
     print(f"saved confidence overall (padchest_px) -> {out_path}")
 
     ############### SEX PLOTS COMBINED
@@ -221,7 +221,7 @@ def plot_confidence_padchest_px():
     fig, ax = plt.subplots(figsize=(8, 5))
     for label, (filename, reports_dir, figures_dir) in sex_data.items():
         df = pd.read_csv(reports_dir / filename)
-        df["confidence"] = (df["mean_probability"] - 0.5).abs()
+        # df["confidence"] = (df["mean_probability"] - 0.5).abs()
         ax.plot(df["layer"], df["confidence"], label=label, marker="o")
 
     ax.set_xlabel("Layer")
@@ -235,7 +235,7 @@ def plot_confidence_padchest_px():
     plt.tight_layout()
 
     out_path = figures_dir / f"confidence_per_layer_{name}.png"
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=300)
     print(f"saved confidence sex (padchest_px) -> {out_path}")
 
     ############### SCANNER PLOTS COMBINED
@@ -247,7 +247,7 @@ def plot_confidence_padchest_px():
     fig, ax = plt.subplots(figsize=(8, 5))
     for label, (filename, reports_dir, figures_dir) in scanner_data.items():
         df = pd.read_csv(reports_dir / filename)
-        df["confidence"] = (df["mean_probability"] - 0.5).abs()
+        # df["confidence"] = (df["mean_probability"] - 0.5).abs()
         ax.plot(df["layer"], df["confidence"], label=label, marker="o")
 
     ax.set_xlabel("Layer")
@@ -261,7 +261,7 @@ def plot_confidence_padchest_px():
     plt.tight_layout()
 
     out_path = figures_dir / f"confidence_per_layer_{name}.png"
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=300)
     print(f"saved confidence scanner (padchest_px) -> {out_path}")
 
 
