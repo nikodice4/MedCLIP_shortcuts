@@ -22,7 +22,7 @@ def plot_confidence():
         df = pd.read_csv(reports_dir / filename)
         # confidence defined at 0.5
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["confidence"], label=name, marker="o")
+        ax.plot(df["layer"], df["mean_probability"], label=name, marker="o") # having to rename to mean_probability (actuallu confidence)
         # ax.plot(test_df["layer"],  test_df["confidence"],  label="Test",  marker="o")
         # ax.plot(drain_df["layer"],  drain_df["confidence"],  label="Drains",  marker="o")
         # ax.plot(no_drain_df["layer"],  no_drain_df["confidence"],  label="No drains",  marker="o")
@@ -50,7 +50,7 @@ def plot_confidence():
     for label, (filename, reports_dir, figures_dir) in sex_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["confidence"], label=label, marker="o")
+        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
@@ -76,7 +76,7 @@ def plot_confidence():
     for label, (filename, reports_dir, figures_dir) in drain_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["confidence"], label=label, marker="o")
+        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
@@ -108,7 +108,7 @@ def plot_confidence_padchest():
         df = pd.read_csv(reports_dir / filename)
         # confidence defined at 0.5
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["confidence"], label=name, marker="o")
+        ax.plot(df["layer"], df["mean_probability"], label=name, marker="o") # having to rename to mean_probability (actuallu confidence)
         # ax.plot(test_df["layer"],  test_df["confidence"],  label="Test",  marker="o")
         # ax.plot(drain_df["layer"],  drain_df["confidence"],  label="Drains",  marker="o")
         # ax.plot(no_drain_df["layer"],  no_drain_df["confidence"],  label="No drains",  marker="o")
@@ -136,7 +136,7 @@ def plot_confidence_padchest():
     for label, (filename, reports_dir, figures_dir) in sex_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["confidence"], label=label, marker="o")
+        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
@@ -162,7 +162,7 @@ def plot_confidence_padchest():
     for label, (filename, reports_dir, figures_dir) in scanner_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["confidence"], label=label, marker="o")
+        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
@@ -194,7 +194,7 @@ def plot_confidence_padchest_px():
         df = pd.read_csv(reports_dir / filename)
         # confidence defined at 0.5
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["confidence"], label=name, marker="o")
+        ax.plot(df["layer"], df["mean_probability"], label=name, marker="o") # having to rename to mean_probability (actuallu confidence)
         # ax.plot(test_df["layer"],  test_df["confidence"],  label="Test",  marker="o")
         # ax.plot(drain_df["layer"],  drain_df["confidence"],  label="Drains",  marker="o")
         # ax.plot(no_drain_df["layer"],  no_drain_df["confidence"],  label="No drains",  marker="o")
@@ -222,7 +222,7 @@ def plot_confidence_padchest_px():
     for label, (filename, reports_dir, figures_dir) in sex_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["confidence"], label=label, marker="o")
+        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
@@ -248,7 +248,7 @@ def plot_confidence_padchest_px():
     for label, (filename, reports_dir, figures_dir) in scanner_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["confidence"], label=label, marker="o")
+        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
