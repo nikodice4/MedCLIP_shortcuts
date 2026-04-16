@@ -4,7 +4,7 @@
 #SBATCH --output=evaluation_current.%j.out
 #SBATCH --cpus-per-task=8
 #SBATCH --time=14:00:00
-#SBATCH --partition=purrlab_students
+#SBATCH --partition=cores_any
 #SBATCH --mem=32G
 #SBATCH --mail-type=START,FAIL,END          # Send an email when the job finishes or fails
 
