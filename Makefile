@@ -41,11 +41,11 @@ evaluation_padchest:
 evaluation_padchest_px:
 	$(PYTHON_INTERPRETER) -m src.models.evaluation_padchest_px
 
-plotting:
-	$(PYTHON_INTERPRETER) -m src.models.plotting
+plotting_all:
+	$(PYTHON_INTERPRETER) -m src.models.plotting_all
 
-plotting_padchest:
-	$(PYTHON_INTERPRETER) -m src.models.plotting_padchest
+# plotting_padchest:
+# 	$(PYTHON_INTERPRETER) -m src.models.plotting_padchest
 
 preprocess_padchest:
 	$(PYTHON_INTERPRETER) src/data/processing_padchest.py \
