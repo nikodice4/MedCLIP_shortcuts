@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#SBATCH --job-name=evaluation_current
+#SBATCH --output=evaluation_current.%j.out
+#SBATCH --cpus-per-task=8
+#SBATCH --time=70:00:00
+#SBATCH --partition=purrlab_students
+#SBATCH --mem=32G
+#SBATCH --mail-type=START,FAIL,END          # Send an email when the job finishes or fails
+
+module load Anaconda3
+
+cd /home/resy_nizp/MedCLIP_subgroup
+
+# make create_environment
+
+source activate MedCLIP_subgroup
+
+#cd src/data
+
+make evaluation_current

@@ -41,6 +41,12 @@ evaluation_padchest:
 evaluation_padchest_px:
 	$(PYTHON_INTERPRETER) -m src.models.evaluation_padchest_px
 
+
+evaluation_current:
+	$(PYTHON_INTERPRETER) -m src.models.evaluation
+	$(PYTHON_INTERPRETER) -m src.models.evaluation_padchest
+
+
 plotting_all:
 	$(PYTHON_INTERPRETER) -m src.models.plotting_all
 
