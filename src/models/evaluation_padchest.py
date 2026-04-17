@@ -159,6 +159,22 @@ def evaluate_padchest():
     pd.DataFrame(male_rows).to_csv(config.REPORTS_DIR_PADCHEST_SEX / "mean_probability_per_layer_male.csv", index=False)
     ################### GENDER ###################
 
+    # --------------------- save each layer predictions --------------------- #
+    config.REPORTS_DIR_PADCHEST_LAYER.mkdir(parents=True, exist_ok=True)
+
+    predictions_df = pd.DataFrame({
+        "img_id": y_filenames,
+        "y_true": y_true,
+        "scanner": y_scanner,
+        "sex": y_sex,
+    })
+    for i, probs in enumerate(test_all_probs):
+        predictions_df[f"layer_{i + 1}"] = probs
+
+    predictions_path = config.REPORTS_DIR_PADCHEST_LAYER / "predictions_per_layer_test.csv"
+    predictions_df.to_csv(predictions_path, index=False)
+    print(f"saved each layer predictions -> {predictions_path}")
+
 
 if __name__ == "__main__":
     evaluate_padchest()

@@ -24,11 +24,13 @@ PADCHEST_PX_WEIGHTS_PATH = Path("models/probes/padchest_px_probe_weights.pt") # 
 REPORTS_DIR = Path("reports/chestx")
 REPORTS_DIR_DRAIN = Path("reports/chestx/drain")
 REPORTS_DIR_SEX = Path("reports/chestx/sex")
+REPORTS_DIR_LAYER = Path("reports/chestx/layer")
 
 ########### PADCHEST CSV RESULTS
 REPORTS_DIR_PADCHEST = Path("reports/padchest")
 REPORTS_DIR_PADCHEST_SCANNER = Path("reports/padchest/padchest_scanner")
 REPORTS_DIR_PADCHEST_SEX = Path("reports/padchest/padchest_sex")
+REPORTS_DIR_PADCHEST_LAYER = Path("reports/padchest/layer")
 
 ########### PADCHEST PNEUMOTHORAX CSV RESULTS
 REPORTS_DIR_PADCHEST_PX = Path("reports/padchest_px")
