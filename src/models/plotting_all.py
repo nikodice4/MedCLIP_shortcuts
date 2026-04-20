@@ -523,7 +523,7 @@ if __name__ == "__main__":
     # plotting all confidence curves for all datasets
     plot_confidence()
     plot_confidence_padchest()
-    # plot_confidence_padchest_px()
+    plot_confidence_padchest_px()
     
     # calibration curves for chestx
     calibration_curves_drains()
@@ -534,5 +534,5 @@ if __name__ == "__main__":
     calibration_curves_sex_padchest()
 
     # calibration curves for padchest (pneumothorax)
-    # calibration_curves_scanner_padchest_px()
-    # calibration_curves_sex_padchest_px()
+    calibration_curves_scanner_padchest_px()
+    calibration_curves_sex_padchest_px()
