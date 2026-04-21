@@ -36,6 +36,7 @@ REPORTS_DIR_PADCHEST_LAYER = Path("reports/padchest/layer")
 REPORTS_DIR_PADCHEST_PX = Path("reports/padchest_px")
 REPORTS_DIR_PADCHEST_SCANNER_PX = Path("reports/padchest_px/padchest_scanner_px")
 REPORTS_DIR_PADCHEST_SEX_PX = Path("reports/padchest_px/padchest_sex_px")
+REPORTS_DIR_PADCHEST_LAYER_PX = Path("reports/padchest/layer")
 
 
 ########### CHESTX FIGURES
