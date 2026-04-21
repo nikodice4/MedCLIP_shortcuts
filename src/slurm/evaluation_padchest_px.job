@@ -14,4 +14,4 @@ cd /home/resy_nizp/MedCLIP_subgroup
 
 source activate MedCLIP_subgroup
 
-make evaluation_padchest_px plotting_all
+make evaluation_padchest_px
