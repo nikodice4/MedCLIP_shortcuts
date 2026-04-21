@@ -1,0 +1,12 @@
+Makefile:104: warning: overriding recipe for target 'create_environment'
+Makefile:98: warning: ignoring old recipe for target 'create_environment'
+python -m src.models.plotting_all
+saved confidence overall (chestx) -> reports/figures/chestx/confidence_per_layer_Test data for NIH-CXR14, pneumothorax.png
+saved confidence sex (chestx) -> reports/figures/chestx/sex_plots/confidence_per_layer_Test data for NIH-CXR14, pneumothorax.png
+saved confidence drains (chestx) -> reports/figures/chestx/drain_plots/confidence_per_layer_Test data for NIH-CXR14, pneumothorax.png
+saved confidence overall (padchest) -> reports/figures/padchest/confidence_per_layer_Test data PadChest, cardiomegaly.png
+saved confidence sex (padchest) -> reports/figures/padchest/sex_plots/confidence_per_layer_Test data PadChest, cardiomegaly.png
+saved confidence scanner (padchest) -> reports/figures/padchest/scanner_plots/confidence_per_layer_Test data PadChest, cardiomegaly.png
+saved confidence overall (padchest_px) -> reports/figures/padchest_px/confidence_per_layer_Test data PadChest, pneumothorax.png
+saved confidence sex (padchest_px) -> reports/figures/padchest_px/sex_plots_px/confidence_per_layer_Test data PadChest, pneumothorax.png
+saved confidence scanner (padchest_px) -> reports/figures/padchest_px/scanner_plots_px/confidence_per_layer_Test data PadChest, pneumothorax.png
