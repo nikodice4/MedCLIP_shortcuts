@@ -3,6 +3,53 @@ import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 from . import config
 from sklearn.calibration import calibration_curve
+import numpy as np
+from scipy.stats import bootstrap
+
+
+
+############################################# Bootstrap helper function ###################################
+
+N_BOOT = 1000
+BOOT_SEED = 42
+
+def bootstrap_band(predictions_path, subgroup_col=None, subgroup_value=None):
+    df = pd.read_csv(predictions_path)
+    if subgroup_col is not None:
+        df = df[df[subgroup_col] == subgroup_value].reset_index(drop=True) #we make a new df with the subgroup and the subgroup value (M fx)
+
+    layer_cols = [c for c in df.columns if c.startswith("layer_")] #make list with all layers
+    #print(layer_cols)
+    layer_cols.sort(key=lambda c: int(c.split("_")[1])) #sort to be in correct order
+
+    
+    # Boland confidence per image per layer
+    conf = np.array([[abs(p - 0.5) for p in probs] for probs in df[layer_cols].to_numpy()])
+
+    data = tuple(conf[:, i] for i in range(conf.shape[1])) #make tuple for scipy
+
+    def layerwise_means(*layer_samples):
+        means = []
+        for layer in layer_samples:
+            means.append(layer.mean())
+        return np.array(means)
+
+    res = bootstrap(
+        data,
+        statistic=layerwise_means,
+        n_resamples=N_BOOT,
+        confidence_level=0.95,
+        method="percentile",
+        paired=True,
+        random_state=np.random.default_rng(BOOT_SEED),
+    )
+
+    layers = [int(col.split("_")[1]) for col in layer_cols]
+    mean = np.array([layer.mean() for layer in data])
+
+    ci_low = res.confidence_interval.low
+    ci_high = res.confidence_interval.high
+    return layers, mean, ci_low, ci_high
 
 # if the plot title doesn't say train or test, it is by default test data
 ############################################# CONFIDENCE CURVES #############################################
@@ -11,6 +58,8 @@ def plot_confidence():
     config.FIGURES_DIR_DRAIN.mkdir(parents=True, exist_ok=True)
     config.FIGURES_DIR_SEX.mkdir(parents=True, exist_ok=True)
     config.FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+
+    predictions_path = config.REPORTS_DIR_LAYER / "predictions_per_layer_test.csv"
 
     overall_data = {
         "Train data for NIH-CXR14, pneumothorax": ("mean_probability_per_layer_train.csv", config.REPORTS_DIR, config.FIGURES_DIR),
@@ -22,16 +71,20 @@ def plot_confidence():
         df = pd.read_csv(reports_dir / filename)
         # confidence defined at 0.5
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["mean_probability"], label=name, marker="o") # having to rename to mean_probability (actuallu confidence)
+        line, = ax.plot(df["layer"], df["mean_probability"], label=name, marker="o") # having to rename to mean_probability (actuallu confidence)
         # ax.plot(test_df["layer"],  test_df["confidence"],  label="Test",  marker="o")
         # ax.plot(drain_df["layer"],  drain_df["confidence"],  label="Drains",  marker="o")
         # ax.plot(no_drain_df["layer"],  no_drain_df["confidence"],  label="No drains",  marker="o")
+        if "Test" in name:
+            layers, mean, lo, hi = bootstrap_band(predictions_path)
+            ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
+
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
     ax.set_title("Confidence per layer for overall ChestX data, pneumothorax")
     ax.set_xticks(df["layer"].unique())
     ax.legend()
-    ax.grid(True)
+    ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
@@ -42,22 +95,24 @@ def plot_confidence():
 
     ############### SEX PLOTS COMBINED
     sex_data = {
-        "Female patients NIH-CXR14, pneumothorax": ("mean_probability_per_layer_female.csv", config.REPORTS_DIR_SEX, config.FIGURES_DIR_SEX),
-        "Male patients NIH-CXR14, pneumothorax": ("mean_probability_per_layer_male.csv", config.REPORTS_DIR_SEX, config.FIGURES_DIR_SEX),
+        "Female patients NIH-CXR14, pneumothorax": ("mean_probability_per_layer_female.csv", config.REPORTS_DIR_SEX, config.FIGURES_DIR_SEX, "F"),
+        "Male patients NIH-CXR14, pneumothorax": ("mean_probability_per_layer_male.csv", config.REPORTS_DIR_SEX, config.FIGURES_DIR_SEX, "M"),
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    for label, (filename, reports_dir, figures_dir) in sex_data.items():
+    for label, (filename, reports_dir, figures_dir, sex_val) in sex_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        line, = ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        layers, mean, lo, hi = bootstrap_band(predictions_path, "sex", sex_val)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
     ax.set_title("Confidence per layer for patient sex ChestX data, pneumothorax")
     ax.set_xticks(df["layer"].unique())
     ax.legend()
-    ax.grid(True)
+    ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
@@ -68,22 +123,24 @@ def plot_confidence():
 
     ############### DRAIN PLOTS COMBINED
     drain_data = {
-        "Drains NIH-CXR14, pneumothorax": ("mean_probability_per_layer_drain.csv", config.REPORTS_DIR_DRAIN, config.FIGURES_DIR_DRAIN),
-        "No drains NIH-CXR14, pneumothorax": ("mean_probability_per_layer_nodrain.csv", config.REPORTS_DIR_DRAIN, config.FIGURES_DIR_DRAIN),
+        "Drains NIH-CXR14, pneumothorax": ("mean_probability_per_layer_drain.csv", config.REPORTS_DIR_DRAIN, config.FIGURES_DIR_DRAIN, 1),
+        "No drains NIH-CXR14, pneumothorax": ("mean_probability_per_layer_nodrain.csv", config.REPORTS_DIR_DRAIN, config.FIGURES_DIR_DRAIN, 0),
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    for label, (filename, reports_dir, figures_dir) in drain_data.items():
+    for label, (filename, reports_dir, figures_dir, drain_val) in drain_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        line, = ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        layers, mean, lo, hi = bootstrap_band(predictions_path, "drain", drain_val)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
     ax.set_title("Confidence per layer for drains ChestX data, pneumothorax")
     ax.set_xticks(df["layer"].unique())
     ax.legend()
-    ax.grid(True)
+    ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
@@ -98,6 +155,8 @@ def plot_confidence_padchest():
     config.FIGURES_DIR_PADCHEST_SEX.mkdir(parents=True, exist_ok=True)
     config.FIGURES_DIR_PADCHEST_SCANNER.mkdir(parents=True, exist_ok=True)
 
+    predictions_path = config.REPORTS_DIR_PADCHEST_LAYER / "predictions_per_layer_test.csv"
+
     overall_data = {
         "Train data PadChest, cardiomegaly": ("mean_probability_per_layer_train.csv", config.REPORTS_DIR_PADCHEST, config.FIGURES_DIR_PADCHEST),
         "Test data PadChest, cardiomegaly": ("mean_probability_per_layer_test.csv", config.REPORTS_DIR_PADCHEST, config.FIGURES_DIR_PADCHEST),
@@ -108,16 +167,19 @@ def plot_confidence_padchest():
         df = pd.read_csv(reports_dir / filename)
         # confidence defined at 0.5
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["mean_probability"], label=name, marker="o") # having to rename to mean_probability (actuallu confidence)
+        line, = ax.plot(df["layer"], df["mean_probability"], label=name, marker="o") # having to rename to mean_probability (actuallu confidence)
         # ax.plot(test_df["layer"],  test_df["confidence"],  label="Test",  marker="o")
         # ax.plot(drain_df["layer"],  drain_df["confidence"],  label="Drains",  marker="o")
         # ax.plot(no_drain_df["layer"],  no_drain_df["confidence"],  label="No drains",  marker="o")
+        if "Test" in name:
+            layers, mean, lo, hi = bootstrap_band(predictions_path)
+            ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
     ax.set_title("Confidence per layer for overall PadChest data, cardiomegaly")
     ax.set_xticks(df["layer"].unique())
     ax.legend()
-    ax.grid(True)
+    ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
@@ -128,22 +190,24 @@ def plot_confidence_padchest():
 
     ############### SEX PLOTS COMBINED
     sex_data = {
-        "Female patients PadChest, cardiomegaly": ("mean_probability_per_layer_female.csv", config.REPORTS_DIR_PADCHEST_SEX, config.FIGURES_DIR_PADCHEST_SEX),
-        "Male patients PadChest, cardiomegaly": ("mean_probability_per_layer_male.csv", config.REPORTS_DIR_PADCHEST_SEX, config.FIGURES_DIR_PADCHEST_SEX),
+        "Female patients PadChest, cardiomegaly": ("mean_probability_per_layer_female.csv", config.REPORTS_DIR_PADCHEST_SEX, config.FIGURES_DIR_PADCHEST_SEX, "F"),
+        "Male patients PadChest, cardiomegaly": ("mean_probability_per_layer_male.csv", config.REPORTS_DIR_PADCHEST_SEX, config.FIGURES_DIR_PADCHEST_SEX, "M"),
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    for label, (filename, reports_dir, figures_dir) in sex_data.items():
+    for label, (filename, reports_dir, figures_dir, sex_val) in sex_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        line, = ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        layers, mean, lo, hi = bootstrap_band(predictions_path, "sex", sex_val)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
     ax.set_title("Confidence per layer for patient sex PadChest data, cardiomegaly")
     ax.set_xticks(df["layer"].unique())
     ax.legend()
-    ax.grid(True)
+    ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
@@ -154,22 +218,24 @@ def plot_confidence_padchest():
 
     ############### SCANNER PLOTS COMBINED
     scanner_data = {
-        "ImagingDynamicsCompanyLtd PadChest, cardiomegaly": ("mean_probability_per_layer_ImagingDynamicsCompanyLtd.csv", config.REPORTS_DIR_PADCHEST_SCANNER, config.FIGURES_DIR_PADCHEST_SCANNER),
-        "PhilipsMedicalSystems PadChest, cardiomegaly": ("mean_probability_per_layer_PhilipsMedicalSystems.csv", config.REPORTS_DIR_PADCHEST_SCANNER, config.FIGURES_DIR_PADCHEST_SCANNER),
+        "ImagingDynamicsCompanyLtd PadChest, cardiomegaly": ("mean_probability_per_layer_ImagingDynamicsCompanyLtd.csv", config.REPORTS_DIR_PADCHEST_SCANNER, config.FIGURES_DIR_PADCHEST_SCANNER, "ImagingDynamicsCompanyLtd"),
+        "PhilipsMedicalSystems PadChest, cardiomegaly": ("mean_probability_per_layer_PhilipsMedicalSystems.csv", config.REPORTS_DIR_PADCHEST_SCANNER, config.FIGURES_DIR_PADCHEST_SCANNER, "PhilipsMedicalSystems"),
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    for label, (filename, reports_dir, figures_dir) in scanner_data.items():
+    for label, (filename, reports_dir, figures_dir, scanner_val) in scanner_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        line, = ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        layers, mean, lo, hi = bootstrap_band(predictions_path, "scanner", scanner_val)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
     ax.set_title("Confidence per layer for scanner machines PadChest data, cardiomegaly")
     ax.set_xticks(df["layer"].unique())
     ax.legend()
-    ax.grid(True)
+    ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
@@ -189,21 +255,26 @@ def plot_confidence_padchest_px():
         "Test data PadChest, pneumothorax": ("mean_probability_per_layer_test.csv", config.REPORTS_DIR_PADCHEST_PX, config.FIGURES_DIR_PADCHEST_PX),
     }
 
+    predictions_path = config.REPORTS_DIR_PADCHEST_LAYER_PX / "predictions_per_layer_test.csv"
+
     fig, ax = plt.subplots(figsize=(8, 5))
     for name, (filename, reports_dir, figures_dir) in overall_data.items():
         df = pd.read_csv(reports_dir / filename)
         # confidence defined at 0.5
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["mean_probability"], label=name, marker="o") # having to rename to mean_probability (actuallu confidence)
+        line, = ax.plot(df["layer"], df["mean_probability"], label=name, marker="o") # having to rename to mean_probability (actuallu confidence)
         # ax.plot(test_df["layer"],  test_df["confidence"],  label="Test",  marker="o")
         # ax.plot(drain_df["layer"],  drain_df["confidence"],  label="Drains",  marker="o")
         # ax.plot(no_drain_df["layer"],  no_drain_df["confidence"],  label="No drains",  marker="o")
+        if "Test" in name:
+            layers, mean, lo, hi = bootstrap_band(predictions_path)
+            ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
     ax.set_title("Confidence per layer for overall PadChest data, pneumothorax")
     ax.set_xticks(df["layer"].unique())
     ax.legend()
-    ax.grid(True)
+    ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
@@ -214,22 +285,24 @@ def plot_confidence_padchest_px():
 
     ############### SEX PLOTS COMBINED
     sex_data = {
-        "Female patients PadChest, pneumothorax": ("mean_probability_per_layer_female.csv", config.REPORTS_DIR_PADCHEST_SEX_PX, config.FIGURES_DIR_PADCHEST_SEX_PX),
-        "Male patients PadChest, pneumothorax": ("mean_probability_per_layer_male.csv", config.REPORTS_DIR_PADCHEST_SEX_PX, config.FIGURES_DIR_PADCHEST_SEX_PX),
+        "Female patients PadChest, pneumothorax": ("mean_probability_per_layer_female.csv", config.REPORTS_DIR_PADCHEST_SEX_PX, config.FIGURES_DIR_PADCHEST_SEX_PX, "F"),
+        "Male patients PadChest, pneumothorax": ("mean_probability_per_layer_male.csv", config.REPORTS_DIR_PADCHEST_SEX_PX, config.FIGURES_DIR_PADCHEST_SEX_PX, "M"),
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    for label, (filename, reports_dir, figures_dir) in sex_data.items():
+    for label, (filename, reports_dir, figures_dir, sex_val) in sex_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        line, = ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        layers, mean, lo, hi = bootstrap_band(predictions_path, "sex", sex_val)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
     ax.set_title("Confidence per layer for patient sex PadChest data, pneumothorax")
     ax.set_xticks(df["layer"].unique())
     ax.legend()
-    ax.grid(True)
+    ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
@@ -240,22 +313,24 @@ def plot_confidence_padchest_px():
 
     ############### SCANNER PLOTS COMBINED
     scanner_data = {
-        "ImagingDynamicsCompanyLtd PadChest, pneumothorax": ("mean_probability_per_layer_ImagingDynamicsCompanyLtd.csv", config.REPORTS_DIR_PADCHEST_SCANNER_PX, config.FIGURES_DIR_PADCHEST_SCANNER_PX),
-        "PhilipsMedicalSystems PadChest, pneumothorax": ("mean_probability_per_layer_PhilipsMedicalSystems.csv", config.REPORTS_DIR_PADCHEST_SCANNER_PX, config.FIGURES_DIR_PADCHEST_SCANNER_PX),
+        "ImagingDynamicsCompanyLtd PadChest, pneumothorax": ("mean_probability_per_layer_ImagingDynamicsCompanyLtd.csv", config.REPORTS_DIR_PADCHEST_SCANNER_PX, config.FIGURES_DIR_PADCHEST_SCANNER_PX, "ImagingDynamicsCompanyLtd"),
+        "PhilipsMedicalSystems PadChest, pneumothorax": ("mean_probability_per_layer_PhilipsMedicalSystems.csv", config.REPORTS_DIR_PADCHEST_SCANNER_PX, config.FIGURES_DIR_PADCHEST_SCANNER_PX, "PhilipsMedicalSystems"),
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    for label, (filename, reports_dir, figures_dir) in scanner_data.items():
+    for label, (filename, reports_dir, figures_dir, scanner_val) in scanner_data.items():
         df = pd.read_csv(reports_dir / filename)
         # df["confidence"] = (df["mean_probability"] - 0.5).abs()
-        ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        line, = ax.plot(df["layer"], df["mean_probability"], label=label, marker="o") # having to rename to mean_probability (actuallu confidence)
+        layers, mean, lo, hi = bootstrap_band(predictions_path, "scanner", scanner_val)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
 
     ax.set_xlabel("Layer")
     ax.set_ylabel("Confidence")
     ax.set_title("Confidence per layer for scanner machines PadChest data, pneumothorax")
     ax.set_xticks(df["layer"].unique())
     ax.legend()
-    ax.grid(True)
+    ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
@@ -299,6 +374,7 @@ def calibration_curves_drains():
         # plt.plot(prob_pred,prob_true,linestyle='solid',marker='o',linewidth=1,color=colors[i],label=f'{models[model_name]}')
 
     # plt.title('Calibration curves for all CLIP-based models')
+    plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
     plt.title("Calibration curve for drains ChestX, pneumothorax", fontsize=20)
@@ -341,6 +417,7 @@ def calibration_curves_sex():
         # plt.plot(prob_pred,prob_true,linestyle='solid',marker='o',linewidth=1,color=colors[i],label=f'{models[model_name]}')
 
     # plt.title('Calibration curves for all CLIP-based models')
+    plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
     plt.title("Calibration curve for patient sex ChestX, pneumothorax", fontsize=20)
@@ -383,6 +460,7 @@ def calibration_curves_scanner_padchest():
         # plt.plot(prob_pred,prob_true,linestyle='solid',marker='o',linewidth=1,color=colors[i],label=f'{models[model_name]}')
 
     # plt.title('Calibration curves for all CLIP-based models')
+    plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
     plt.title("Calibration curve for scanner machines PadChest, cardiomegaly", fontsize=20)
@@ -425,6 +503,7 @@ def calibration_curves_sex_padchest():
         # plt.plot(prob_pred,prob_true,linestyle='solid',marker='o',linewidth=1,color=colors[i],label=f'{models[model_name]}')
 
     # plt.title('Calibration curves for all CLIP-based models')
+    plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
     plt.title("Calibration curve for patient sex PadChest, cardiomegaly", fontsize=20)
@@ -467,6 +546,7 @@ def calibration_curves_scanner_padchest_px():
         # plt.plot(prob_pred,prob_true,linestyle='solid',marker='o',linewidth=1,color=colors[i],label=f'{models[model_name]}')
 
     # plt.title('Calibration curves for all CLIP-based models')
+    plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
     plt.title("Calibration curve for scanner machines PadChest, pneumothorax", fontsize=20)
@@ -509,6 +589,7 @@ def calibration_curves_sex_padchest_px():
         # plt.plot(prob_pred,prob_true,linestyle='solid',marker='o',linewidth=1,color=colors[i],label=f'{models[model_name]}')
 
     # plt.title('Calibration curves for all CLIP-based models')
+    plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
     plt.title("Calibration curve for patient sex PadChest, pneumothorax", fontsize=20)
