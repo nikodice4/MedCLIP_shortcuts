@@ -1,0 +1,5 @@
+Makefile:108: warning: overriding recipe for target 'create_environment'
+Makefile:102: warning: ignoring old recipe for target 'create_environment'
+python -m src.data.run_data_split.py
+/opt/itu/easybuild/software/Anaconda3/2025.06-1/bin/python: Error while finding module specification for 'src.data.run_data_split.py' (ModuleNotFoundError: __path__ attribute not found on 'src.data.run_data_split' while trying to find 'src.data.run_data_split.py'). Try using 'src.data.run_data_split' instead of 'src.data.run_data_split.py' as the module name.
+make: *** [Makefile:71: splits] Error 1
