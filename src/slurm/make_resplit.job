@@ -3,7 +3,6 @@
 #SBATCH --job-name=splits
 #SBATCH --output=splits.%j.out
 #SBATCH --cpus-per-task=8
-#SBATCH --gres=gpu:2              # Schedule a GPU, or more with gpu:2 etc #NEEEWWWW
 #SBATCH --time=03:00:00
 #SBATCH --partition=cores_any
 #SBATCH --mem=32G
