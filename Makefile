@@ -68,7 +68,7 @@ process_px_padchest:
     ""
 
 splits:
-	python -m src.data.run_data_split
+	$(PYTHON_INTERPRETER) -m src.data.run_data_split
 
 
 # run_medclip:
