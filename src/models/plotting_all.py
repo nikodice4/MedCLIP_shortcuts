@@ -13,10 +13,14 @@ from scipy.stats import bootstrap
 N_BOOT = 1000
 BOOT_SEED = 42
 
-def bootstrap_band(predictions_path, subgroup_col=None, subgroup_value=None):
+def bootstrap_band(predictions_path, subgroup_col=None, subgroup_value=None, filters=None):
     df = pd.read_csv(predictions_path)
     if subgroup_col is not None:
         df = df[df[subgroup_col] == subgroup_value].reset_index(drop=True) #we make a new df with the subgroup and the subgroup value (M fx)
+    if filters is not None:
+        for col, val in filters.items():
+            df = df[df[col] == val]
+        df = df.reset_index(drop=True)
 
     layer_cols = [c for c in df.columns if c.startswith("layer_")] #make list with all layers
     #print(layer_cols)
@@ -89,7 +93,7 @@ def plot_confidence():
 
     plt.tight_layout()
 
-    out_path = figures_dir / f"confidence_per_layer_{name}.png"
+    out_path = figures_dir / f"confidence_chestX_pneumothorax_overall.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence overall (chestx) -> {out_path}")
 
@@ -117,7 +121,7 @@ def plot_confidence():
 
     plt.tight_layout()
 
-    out_path = figures_dir / f"confidence_per_layer_{name}.png"
+    out_path = figures_dir / f"confidence_chestX_pneumothorax_sex.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence sex (chestx) -> {out_path}")
 
@@ -145,9 +149,89 @@ def plot_confidence():
 
     plt.tight_layout()
 
-    out_path = figures_dir / f"confidence_per_layer_{name}.png"
+    out_path = figures_dir / f"confidence_chestX_pneumothorax_drain.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence drains (chestx) -> {out_path}")
+
+############### GOLD LABEL x DRAIN COMBINED
+    df_pred = pd.read_csv(predictions_path)
+    layer_cols = sorted([c for c in df_pred.columns if c.startswith("layer_")],
+                        key=lambda c: int(c.split("_")[1]))
+    layers_x = [int(c.split("_")[1]) for c in layer_cols]
+
+    conf_df = (df_pred[layer_cols] - 0.5).abs()
+
+    conf_df["y_true"] = df_pred["y_true"]
+    conf_df["drain"] = df_pred["drain"]
+
+    label_drain_data = {
+        "Pneumothorax positive, drain": {"y_true": 1, "drain": 1},
+        "Pneumothorax positive, no drain": {"y_true": 1, "drain": 0},
+        "Pneumothorax negative, drain": {"y_true": 0, "drain": 1},
+        "Pneumothorax negative, no drain": {"y_true": 0, "drain": 0},
+    }
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for label, filters in label_drain_data.items():
+        subset = conf_df[(conf_df["y_true"] == filters["y_true"]) & (conf_df["drain"] == filters["drain"])]
+        mean_per_layer = subset[layer_cols].mean()
+        line, = ax.plot(layers_x, mean_per_layer.values, label=f"{label} (n={len(subset)})", marker="o")
+        layers, mean, lo, hi = bootstrap_band(predictions_path, filters=filters)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
+
+    ax.set_xlabel("Layer")
+    ax.set_ylabel("Confidence")
+    ax.set_title("Confidence per layer by gold label and drain ChestX, pneumothorax")
+    ax.set_xticks(layers_x)
+    ax.legend()
+    ax.grid(axis='y')
+    ax.set_ylim(0, 0.5)
+
+    plt.tight_layout()
+
+    out_path = config.FIGURES_DIR_DRAIN / "confidence_chestX_pneumothorax_drain_gold_label.png"
+    plt.savefig(out_path, dpi=300)
+    print(f"saved confidence gold label x drain (chestx) -> {out_path}")
+
+    ############### GOLD LABEL x SEX COMBINED
+    df_pred = pd.read_csv(predictions_path)
+    layer_cols = sorted([c for c in df_pred.columns if c.startswith("layer_")],
+                        key=lambda c: int(c.split("_")[1]))
+    layers_x = [int(c.split("_")[1]) for c in layer_cols]
+
+    conf_df = (df_pred[layer_cols] - 0.5).abs()
+
+    conf_df["y_true"] = df_pred["y_true"]
+    conf_df["sex"] = df_pred["sex"]
+
+    label_sex_data = {
+        "Pneumothorax positive, female": {"y_true": 1, "sex": "F"},
+        "Pneumothorax positive, male": {"y_true": 1, "sex": "M"},
+        "Pneumothorax negative, female": {"y_true": 0, "sex": "F"},
+        "Pneumothorax negative, male":   {"y_true": 0, "sex": "M"},
+    }
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for label, filters in label_sex_data.items():
+        subset = conf_df[(conf_df["y_true"] == filters["y_true"]) & (conf_df["sex"] == filters["sex"])]
+        mean_per_layer = subset[layer_cols].mean()
+        line, = ax.plot(layers_x, mean_per_layer.values, label=f"{label} (n={len(subset)})", marker="o")
+        layers, mean, lo, hi = bootstrap_band(predictions_path, filters=filters)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
+
+    ax.set_xlabel("Layer")
+    ax.set_ylabel("Confidence")
+    ax.set_title("Confidence per layer by gold label and sex ChestX, pneumothorax")
+    ax.set_xticks(layers_x)
+    ax.legend()
+    ax.grid(axis='y')
+    ax.set_ylim(0, 0.5)
+
+    plt.tight_layout()
+
+    out_path = config.FIGURES_DIR_SEX / "confidence_chestX_pneumothorax_sex_gold_label.png"
+    plt.savefig(out_path, dpi=300)
+    print(f"saved confidence gold label x sex (chestx) -> {out_path}")
 
 ############### PADCHEST CARDIOMGELY
 def plot_confidence_padchest():
@@ -184,7 +268,7 @@ def plot_confidence_padchest():
 
     plt.tight_layout()
 
-    out_path = figures_dir / f"confidence_per_layer_{name}.png"
+    out_path = figures_dir / f"confidence_padchest_cardiomegaly_overall.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence overall (padchest) -> {out_path}")
 
@@ -212,7 +296,7 @@ def plot_confidence_padchest():
 
     plt.tight_layout()
 
-    out_path = figures_dir / f"confidence_per_layer_{name}.png"
+    out_path = figures_dir / f"confidence_padchest_cardiomegaly_sex.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence sex (padchest) -> {out_path}")
 
@@ -240,9 +324,87 @@ def plot_confidence_padchest():
 
     plt.tight_layout()
 
-    out_path = figures_dir / f"confidence_per_layer_{name}.png"
+    out_path = figures_dir / f"confidence_padchest_cardiomegaly_scanner.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence scanner (padchest) -> {out_path}")
+
+############### GOLD LABEL x SCANNER COMBINED
+    df_pred = pd.read_csv(predictions_path)
+    layer_cols = sorted([c for c in df_pred.columns if c.startswith("layer_")],
+                        key=lambda c: int(c.split("_")[1]))
+    layers_x = [int(c.split("_")[1]) for c in layer_cols]
+
+    conf_df = (df_pred[layer_cols] - 0.5).abs()
+
+    conf_df["y_true"] = df_pred["y_true"]
+    conf_df["scanner"] = df_pred["scanner"]
+
+    label_scanner_data = {
+        "Cardiomegaly positive, ImagingDynamicsCompanyLtd": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Cardiomegaly positive, PhilipsMedicalSystems": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
+        "Cardiomegaly negative, ImagingDynamicsCompanyLtd": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Cardiomegaly negative, PhilipsMedicalSystems": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
+    }
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for label, filters in label_scanner_data.items():
+        subset = conf_df[(conf_df["y_true"] == filters["y_true"]) & (conf_df["scanner"] == filters["scanner"])]
+        mean_per_layer = subset[layer_cols].mean()
+        line, = ax.plot(layers_x, mean_per_layer.values, label=f"{label} (n={len(subset)})", marker="o")
+        layers, mean, lo, hi = bootstrap_band(predictions_path, filters=filters)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
+
+    ax.set_xlabel("Layer")
+    ax.set_ylabel("Confidence")
+    ax.set_title("Confidence per layer by gold label and scanner PadChest, cardiomegaly")
+    ax.set_xticks(layers_x)
+    ax.legend()
+    ax.grid(axis='y')
+    ax.set_ylim(0, 0.5)
+
+    plt.tight_layout()
+
+    out_path = config.FIGURES_DIR_PADCHEST_SCANNER / "confidence_padchest_cardiomegaly_scanner_gold_label.png"
+    plt.savefig(out_path, dpi=300)
+    print(f"saved confidence gold label x scanner (padchest) -> {out_path}")
+
+    ############### GOLD LABEL x SEX COMBINED
+    df_pred = pd.read_csv(predictions_path)
+    layer_cols = sorted([c for c in df_pred.columns if c.startswith("layer_")],
+                        key=lambda c: int(c.split("_")[1]))
+    layers_x = [int(c.split("_")[1]) for c in layer_cols]
+    conf_df = (df_pred[layer_cols] - 0.5).abs() # Boland confidence: |p - 0.5|
+    conf_df["y_true"] = df_pred["y_true"]
+    conf_df["sex"] = df_pred["sex"]
+
+    label_sex_data = {
+        "Cardiomegaly positive, female": {"y_true": 1, "sex": "F"},
+        "Cardiomegaly positive, male": {"y_true": 1, "sex": "M"},
+        "Cardiomegaly negative, female": {"y_true": 0, "sex": "F"},
+        "Cardiomegaly negative, male": {"y_true": 0, "sex": "M"},
+    }
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for label, filters in label_sex_data.items():
+        subset = conf_df[(conf_df["y_true"] == filters["y_true"]) & (conf_df["sex"] == filters["sex"])]
+        mean_per_layer = subset[layer_cols].mean()
+        line, = ax.plot(layers_x, mean_per_layer.values, label=f"{label} (n={len(subset)})", marker="o")
+        layers, mean, lo, hi = bootstrap_band(predictions_path, filters=filters)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
+
+    ax.set_xlabel("Layer")
+    ax.set_ylabel("Confidence")
+    ax.set_title("Confidence per layer by gold label and sex PadChest, cardiomegaly")
+    ax.set_xticks(layers_x)
+    ax.legend()
+    ax.grid(axis='y')
+    ax.set_ylim(0, 0.5)
+
+    plt.tight_layout()
+
+    out_path = config.FIGURES_DIR_PADCHEST_SEX / "confidence_padchest_pneumothorax_sex_gold_label.png"
+    plt.savefig(out_path, dpi=300)
+    print(f"saved confidence gold label x sex (padchest) -> {out_path}")
 
 ############### PADCHEST PNEUMOTHORAX
 def plot_confidence_padchest_px():
@@ -279,7 +441,7 @@ def plot_confidence_padchest_px():
 
     plt.tight_layout()
 
-    out_path = figures_dir / f"confidence_per_layer_{name}.png"
+    out_path = figures_dir / f"confidence_padchest_pneumothorax_overall.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence overall (padchest_px) -> {out_path}")
 
@@ -307,7 +469,7 @@ def plot_confidence_padchest_px():
 
     plt.tight_layout()
 
-    out_path = figures_dir / f"confidence_per_layer_{name}.png"
+    out_path = figures_dir / f"confidence_padchest_pneumothorax_sex.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence sex (padchest_px) -> {out_path}")
 
@@ -335,9 +497,89 @@ def plot_confidence_padchest_px():
 
     plt.tight_layout()
 
-    out_path = figures_dir / f"confidence_per_layer_{name}.png"
+    out_path = figures_dir / f"confidence_padchest_pneumothorax_sex_scanner.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence scanner (padchest_px) -> {out_path}")
+
+############### GOLD LABEL x SCANNER COMBINED
+    df_pred = pd.read_csv(predictions_path)
+    layer_cols = sorted([c for c in df_pred.columns if c.startswith("layer_")],
+                        key=lambda c: int(c.split("_")[1]))
+    layers_x = [int(c.split("_")[1]) for c in layer_cols]
+
+    conf_df = (df_pred[layer_cols] - 0.5).abs()
+
+    conf_df["y_true"] = df_pred["y_true"]
+    conf_df["scanner"] = df_pred["scanner"]
+
+    label_scanner_data = {
+        "Pneumothorax positive, ImagingDynamicsCompanyLtd": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Pneumothorax positive, PhilipsMedicalSystems": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
+        "Pneumothorax negative, ImagingDynamicsCompanyLtd": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Pneumothorax negative, PhilipsMedicalSystems": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
+    }
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for label, filters in label_scanner_data.items():
+        subset = conf_df[(conf_df["y_true"] == filters["y_true"]) & (conf_df["scanner"] == filters["scanner"])]
+        mean_per_layer = subset[layer_cols].mean()
+        line, = ax.plot(layers_x, mean_per_layer.values, label=f"{label} (n={len(subset)})", marker="o")
+        layers, mean, lo, hi = bootstrap_band(predictions_path, filters=filters)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
+
+    ax.set_xlabel("Layer")
+    ax.set_ylabel("Confidence")
+    ax.set_title("Confidence per layer by gold label and scanner PadChest, pneumothorax")
+    ax.set_xticks(layers_x)
+    ax.legend()
+    ax.grid(axis='y')
+    ax.set_ylim(0, 0.5)
+
+    plt.tight_layout()
+
+    out_path = config.FIGURES_DIR_PADCHEST_SCANNER_PX / "confidence_padchest_pneumothorax_scanner_gold_label.png"
+    plt.savefig(out_path, dpi=300)
+    print(f"saved confidence gold label x scanner (padchest_px) -> {out_path}")
+
+    ############### GOLD LABEL x SEX COMBINED
+    df_pred = pd.read_csv(predictions_path)
+    layer_cols = sorted([c for c in df_pred.columns if c.startswith("layer_")],
+                        key=lambda c: int(c.split("_")[1]))
+    layers_x = [int(c.split("_")[1]) for c in layer_cols]
+
+    conf_df = (df_pred[layer_cols] - 0.5).abs()
+
+    conf_df["y_true"] = df_pred["y_true"]
+    conf_df["sex"] = df_pred["sex"]
+
+    label_sex_data = {
+        "Pneumothorax positive, female": {"y_true": 1, "sex": "F"},
+        "Pneumothorax positive, male": {"y_true": 1, "sex": "M"},
+        "Pneumothorax negative, female": {"y_true": 0, "sex": "F"},
+        "Pneumothorax negative, male": {"y_true": 0, "sex": "M"},
+    }
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for label, filters in label_sex_data.items():
+        subset = conf_df[(conf_df["y_true"] == filters["y_true"]) & (conf_df["sex"] == filters["sex"])]
+        mean_per_layer = subset[layer_cols].mean()
+        line, = ax.plot(layers_x, mean_per_layer.values, label=f"{label} (n={len(subset)})", marker="o")
+        layers, mean, lo, hi = bootstrap_band(predictions_path, filters=filters)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
+
+    ax.set_xlabel("Layer")
+    ax.set_ylabel("Confidence")
+    ax.set_title("Confidence per layer by gold label and sex PadChest, pneumothorax")
+    ax.set_xticks(layers_x)
+    ax.legend()
+    ax.grid(axis='y')
+    ax.set_ylim(0, 0.5)
+
+    plt.tight_layout()
+
+    out_path = config.FIGURES_DIR_PADCHEST_SEX_PX / "confidence_padchest_pneumothorax_sex_gold_label.png"
+    plt.savefig(out_path, dpi=300)
+    print(f"saved confidence gold label x sex (padchest_px) -> {out_path}")
 
 
 ############################################# CALIBRATION CURVES #############################################
