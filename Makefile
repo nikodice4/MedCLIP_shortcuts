@@ -67,6 +67,9 @@ process_px_padchest:
     data/processed/padchest \
     ""
 
+splits:
+	python -m src.data.run_data_split.py
+
 
 # run_medclip:
 # 	$(PYTHON_INTERPRETER) src/models/model.py
