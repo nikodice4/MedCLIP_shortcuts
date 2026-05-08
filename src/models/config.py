@@ -38,6 +38,7 @@ REPORTS_DIR_PADCHEST_SCANNER_PX = Path("reports/padchest_px/padchest_scanner_px"
 REPORTS_DIR_PADCHEST_SEX_PX = Path("reports/padchest_px/padchest_sex_px")
 REPORTS_DIR_PADCHEST_LAYER_PX = Path("reports/padchest_px/layer")
 
+FIGS = Path("reports/figures/")
 
 ########### CHESTX FIGURES
 FIGURES_DIR = Path("reports/figures/chestx/")
@@ -61,3 +62,6 @@ BATCH_SIZE = 32
 LR = 0.00001
 ES_DELTA = 0.001
 ES_PATIENCE = 15 
+
+N_BOOT = 1000
+BOOT_SEED = 42

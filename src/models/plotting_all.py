@@ -9,10 +9,6 @@ from scipy.stats import bootstrap
 
 
 ############################################# Bootstrap helper function ###################################
-
-N_BOOT = 1000
-BOOT_SEED = 42
-
 def bootstrap_band(predictions_path, subgroup_col=None, subgroup_value=None, filters=None):
     df = pd.read_csv(predictions_path)
     if subgroup_col is not None:
@@ -41,11 +37,11 @@ def bootstrap_band(predictions_path, subgroup_col=None, subgroup_value=None, fil
     res = bootstrap(
         data,
         statistic=layerwise_means,
-        n_resamples=N_BOOT,
+        n_resamples=config.N_BOOT,
         confidence_level=0.95,
         method="percentile",
         paired=True,
-        random_state=np.random.default_rng(BOOT_SEED),
+        random_state=np.random.default_rng(config.BOOT_SEED),
     )
 
     layers = [int(col.split("_")[1]) for col in layer_cols]
@@ -624,7 +620,7 @@ def calibration_curves_drains():
     plt.yticks(fontsize=20)
     plt.legend(fontsize=15)
     plt.savefig(config.FIGURES_DIR_DRAIN / "calibration_curve_drains.png", bbox_inches='tight', dpi=300)
-    plt.close()
+    #plt.close()
 
 ############### CHESTX PNEUMOTHORAX
 ############### SEX
@@ -667,7 +663,7 @@ def calibration_curves_sex():
     plt.yticks(fontsize=20)
     plt.legend(fontsize=15)
     plt.savefig(config.FIGURES_DIR_SEX / "calibration_curve_sex.png", bbox_inches='tight', dpi=300)
-    plt.close()
+    #plt.close()
 
 ############### PADCHEST CARDIOMEGALY
 ############### SCANNER
@@ -710,7 +706,7 @@ def calibration_curves_scanner_padchest():
     plt.yticks(fontsize=20)
     plt.legend(fontsize=15)
     plt.savefig(config.FIGURES_DIR_PADCHEST_SCANNER/ "calibration_curve_scanner.png", bbox_inches='tight', dpi=300)
-    plt.close()
+    #plt.close()
 
 ############### PADCHEST CARDIOMEGALY
 ############### SEX
@@ -753,7 +749,7 @@ def calibration_curves_sex_padchest():
     plt.yticks(fontsize=20)
     plt.legend(fontsize=15)
     plt.savefig(config.FIGURES_DIR_PADCHEST_SEX / "calibration_curve_sex.png", bbox_inches='tight', dpi=300)
-    plt.close()
+    #plt.close()
 
 ############### PADCHEST PNEUMOTHORAX
 ############### SCANNER
@@ -796,7 +792,7 @@ def calibration_curves_scanner_padchest_px():
     plt.yticks(fontsize=20)
     plt.legend(fontsize=15)
     plt.savefig(config.FIGURES_DIR_PADCHEST_SCANNER_PX/ "calibration_curve_scanner.png", bbox_inches='tight', dpi=300)
-    plt.close()
+    #plt.close()
 
 ############### PADCHEST PNEUMOTHORAX
 ############### SEX
@@ -839,7 +835,7 @@ def calibration_curves_sex_padchest_px():
     plt.yticks(fontsize=20)
     plt.legend(fontsize=15)
     plt.savefig(config.FIGURES_DIR_PADCHEST_SEX_PX / "calibration_curve_sex.png", bbox_inches='tight', dpi=300)
-    plt.close()
+    #plt.close()
 
 
 if __name__ == "__main__":
