@@ -37,7 +37,8 @@ MedCLIP model trained on medical imaging data to uncover subgroups for robustnes
 │
 ├── padchest_splits     
 │   ├── padchest
-│   ├── padchest_px
+│   │
+│   └── padchest_px
 │
 │
 ├── references
