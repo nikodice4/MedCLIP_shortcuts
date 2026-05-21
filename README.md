@@ -164,7 +164,7 @@ make requirements
 ```
 To run this project, you will need both the NIH-CXR14 (refered to as chestX in this repository dataset) and the PadChest data.
 NIH-CXR14: https://www.kaggle.com/datasets/nih-chest-xrays/data
-PadChest: https://bimcv.cipf.es/bimcv-projects/padchest
+PadChest: http://bimcv.cipf.es/bimcv-projects/padchest/
 ```
 
 ## Process the data, first test and train for chestX separately, and then PadChest for both cardiomegaly and pneumothorax  
