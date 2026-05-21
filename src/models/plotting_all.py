@@ -109,7 +109,7 @@ def plot_confidence():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer patient sex NIH-CXR14, pneumothorax", fontsize=18)
+    ax.set_title("Confidence per layer patient sex NIH-CXR14, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(df["layer"].unique())
     ax.legend()
     ax.grid(axis='y')
@@ -137,7 +137,7 @@ def plot_confidence():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer drains NIH-CXR14, pneumothorax", fontsize=18)
+    ax.set_title("Confidence per layer drains \n NIH-CXR14, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(df["layer"].unique())
     ax.legend()
     ax.grid(axis='y')
@@ -177,7 +177,7 @@ def plot_confidence():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer drains NIH-CXR14, pneumothorax", fontsize=18)
+    ax.set_title("Confidence per layer drains \n NIH-CXR14, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
     ax.legend()
     ax.grid(axis='y')
@@ -217,7 +217,7 @@ def plot_confidence():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer patient sex NIH-CXR14, pneumothorax", fontsize=18)
+    ax.set_title("Confidence per layer patient sex \n NIH-CXR14, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
     ax.legend()
     ax.grid(axis='y')
@@ -256,7 +256,7 @@ def plot_confidence_padchest():
             ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer overall PadChest data, cardiomegaly", fontsize=18)
+    ax.set_title("Confidence per layer overall \n PadChest, cardiomegaly", fontsize=18, loc='center')
     ax.set_xticks(df["layer"].unique())
     ax.legend()
     ax.grid(axis='y')
@@ -284,7 +284,7 @@ def plot_confidence_padchest():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer patient sex PadChest data, cardiomegaly", fontsize=18)
+    ax.set_title("Confidence per layer patient sex \n PadChest, cardiomegaly", fontsize=18, loc='center')
     ax.set_xticks(df["layer"].unique())
     ax.legend()
     ax.grid(axis='y')
@@ -312,7 +312,7 @@ def plot_confidence_padchest():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer scanner machines PadChest, cardiomegaly", fontsize=18)
+    ax.set_title("Confidence per layer scanner machines \n PadChest, cardiomegaly", fontsize=18, loc='center')
     ax.set_xticks(df["layer"].unique())
     ax.legend()
     ax.grid(axis='y')
@@ -352,7 +352,7 @@ def plot_confidence_padchest():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer scanner machines PadChest, cardiomegaly", fontsize=18)
+    ax.set_title("Confidence per layer scanner machines\n PadChest, cardiomegaly", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
     ax.legend()
     ax.grid(axis='y')
@@ -390,7 +390,7 @@ def plot_confidence_padchest():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer patient sex PadChest, cardiomegaly", fontsize=18)
+    ax.set_title("Confidence per layer patient sex\n PadChest, cardiomegaly", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
     ax.legend()
     ax.grid(axis='y')
@@ -429,7 +429,7 @@ def plot_confidence_padchest_px():
             ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer overall PadChest, pneumothorax", fontsize=18)
+    ax.set_title("Confidence per layer overall \n PadChest, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(df["layer"].unique())
     ax.legend()
     ax.grid(axis='y')
@@ -457,7 +457,7 @@ def plot_confidence_padchest_px():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer patient sex PadChest, pneumothorax", fontsize=18)
+    ax.set_title("Confidence per layer patient sex\n PadChest, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(df["layer"].unique())
     ax.legend()
     ax.grid(axis='y')
@@ -485,7 +485,7 @@ def plot_confidence_padchest_px():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer scanner machines PadChest, pneumothorax", fontsize=18)
+    ax.set_title("Confidence per layer scanner machines\n PadChest, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(df["layer"].unique())
     ax.legend()
     ax.grid(axis='y')
@@ -525,7 +525,7 @@ def plot_confidence_padchest_px():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer scanner machines PadChest, pneumothorax", fontsize=18)
+    ax.set_title("Confidence per layer scanner machines\n PadChest, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
     ax.legend()
     ax.grid(axis='y')
@@ -565,7 +565,7 @@ def plot_confidence_padchest_px():
 
     ax.set_xlabel("Layer", fontdict = {'fontsize' : 16})
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
-    ax.set_title("Confidence per layer patient sex PadChest, pneumothorax", fontsize=18)
+    ax.set_title("Confidence per layer patient sex\n PadChest, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
     ax.legend()
     ax.grid(axis='y')
