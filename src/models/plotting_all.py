@@ -139,7 +139,7 @@ def plot_confidence():
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
     ax.set_title("Confidence per layer drains \n NIH-CXR14, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(df["layer"].unique())
-    ax.legend()
+    ax.legend(fontsize=14)
     ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
@@ -179,7 +179,7 @@ def plot_confidence():
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
     ax.set_title("Confidence per layer drains \n NIH-CXR14, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
-    ax.legend()
+    ax.legend(fontsize=14)
     ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
@@ -219,7 +219,7 @@ def plot_confidence():
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
     ax.set_title("Confidence per layer patient sex \n NIH-CXR14, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
-    ax.legend()
+    ax.legend(fontsize=14)
     ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
@@ -336,10 +336,10 @@ def plot_confidence_padchest():
     conf_df["scanner"] = df_pred["scanner"]
 
     label_scanner_data = {
-        "Cardiomegaly positive, ImagingDynamicsCompanyLtd": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
-        "Cardiomegaly positive, PhilipsMedicalSystems": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
-        "Cardiomegaly negative, ImagingDynamicsCompanyLtd": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
-        "Cardiomegaly negative, PhilipsMedicalSystems": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
+        "Cardiomegaly positive, IDC": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Cardiomegaly positive, PMS": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
+        "Cardiomegaly negative, IDC": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Cardiomegaly negative, PMS": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -354,7 +354,7 @@ def plot_confidence_padchest():
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
     ax.set_title("Confidence per layer scanner machines\n PadChest, cardiomegaly", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
-    ax.legend()
+    ax.legend(fontsize=14)
     ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
@@ -392,13 +392,13 @@ def plot_confidence_padchest():
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
     ax.set_title("Confidence per layer patient sex\n PadChest, cardiomegaly", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
-    ax.legend()
+    ax.legend(fontsize=14)
     ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
     plt.tight_layout()
 
-    out_path = config.FIGURES_DIR_PADCHEST_SEX / "confidence_padchest_pneumothorax_sex_gold_label.png"
+    out_path = config.FIGURES_DIR_PADCHEST_SEX / "confidence_padchest_cardiomegaly_sex_gold_label.png"
     plt.savefig(out_path, dpi=300)
     print(f"saved confidence gold label x sex (padchest) -> {out_path}")
 
@@ -509,10 +509,10 @@ def plot_confidence_padchest_px():
     conf_df["scanner"] = df_pred["scanner"]
 
     label_scanner_data = {
-        "Pneumothorax positive, ImagingDynamicsCompanyLtd": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
-        "Pneumothorax positive, PhilipsMedicalSystems": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
-        "Pneumothorax negative, ImagingDynamicsCompanyLtd": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
-        "Pneumothorax negative, PhilipsMedicalSystems": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
+        "Pneumothorax positive, IDC": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Pneumothorax positive, PMS": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
+        "Pneumothorax negative, IDC": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Pneumothorax negative, PMS": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -527,7 +527,7 @@ def plot_confidence_padchest_px():
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
     ax.set_title("Confidence per layer scanner machines\n PadChest, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
-    ax.legend()
+    ax.legend(fontsize=11)
     ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
@@ -567,7 +567,7 @@ def plot_confidence_padchest_px():
     ax.set_ylabel("Confidence", fontdict = {'fontsize' : 16})
     ax.set_title("Confidence per layer patient sex\n PadChest, pneumothorax", fontsize=18, loc='center')
     ax.set_xticks(layers_x)
-    ax.legend()
+    ax.legend(fontsize=11)
     ax.grid(axis='y')
     ax.set_ylim(0, 0.5)
 
@@ -615,10 +615,10 @@ def calibration_curves_drains():
     plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
-    plt.title("Calibration curve for drains NIH-CXR14, pneumothorax", fontsize=20)
+    plt.title("Calibration curve for drains \n NIH-CXR14, pneumothorax", fontsize=20)
     plt.xticks(fontsize=20)
     plt.yticks(fontsize=20)
-    plt.legend(fontsize=15)
+    plt.legend(fontsize=20)
     plt.savefig(config.FIGURES_DIR_DRAIN / "calibration_curve_drains.png", bbox_inches='tight', dpi=300)
     #plt.close()
 
@@ -658,10 +658,10 @@ def calibration_curves_sex():
     plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
-    plt.title("Calibration curve for patient sex NIH-CXR14, pneumothorax", fontsize=20)
+    plt.title("Calibration curve for patient sex \n NIH-CXR14, pneumothorax", fontsize=20)
     plt.xticks(fontsize=20)
     plt.yticks(fontsize=20)
-    plt.legend(fontsize=15)
+    plt.legend(fontsize=20)
     plt.savefig(config.FIGURES_DIR_SEX / "calibration_curve_sex.png", bbox_inches='tight', dpi=300)
     #plt.close()
 
@@ -688,12 +688,12 @@ def calibration_curves_scanner_padchest():
     y_true = df_probas[df_probas["scanner"]=="ImagingDynamicsCompanyLtd"]["y_true"]
     y_proba = df_probas[df_probas["scanner"]=="ImagingDynamicsCompanyLtd"]["y_prob"]
     prob_true, prob_pred = calibration_curve(y_true, y_proba, n_bins=10)
-    plt.plot(prob_pred, prob_true,linestyle='dashed',marker='^',linewidth=1,label='MedCLIP, ImagingDynamicsCompanyLtd')
+    plt.plot(prob_pred, prob_true,linestyle='dashed',marker='^',linewidth=1,label='MedCLIP, IDC')
 
     y_true = df_probas[df_probas["scanner"]=="PhilipsMedicalSystems"]["y_true"]
     y_proba = df_probas[df_probas["scanner"]=="PhilipsMedicalSystems"]["y_prob"]
     prob_true, prob_pred = calibration_curve(y_true, y_proba, n_bins=10)
-    plt.plot(prob_pred, prob_true,linestyle='dashdot',marker='s',linewidth=1,label='MedCLIP, PhilipsMedicalSystems')
+    plt.plot(prob_pred, prob_true,linestyle='dashdot',marker='s',linewidth=1,label='MedCLIP, PMS')
     # else:
         # plt.plot(prob_pred,prob_true,linestyle='solid',marker='o',linewidth=1,color=colors[i],label=f'{models[model_name]}')
 
@@ -701,10 +701,10 @@ def calibration_curves_scanner_padchest():
     plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
-    plt.title("Calibration curve for scanner machines PadChest, cardiomegaly", fontsize=20)
+    plt.title("Calibration curve for \n scanner machines PadChest, cardiomegaly", fontsize=20)
     plt.xticks(fontsize=20)
     plt.yticks(fontsize=20)
-    plt.legend(fontsize=15)
+    plt.legend(fontsize=20)
     plt.savefig(config.FIGURES_DIR_PADCHEST_SCANNER/ "calibration_curve_scanner.png", bbox_inches='tight', dpi=300)
     #plt.close()
 
@@ -744,10 +744,10 @@ def calibration_curves_sex_padchest():
     plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
-    plt.title("Calibration curve for patient sex PadChest, cardiomegaly", fontsize=20)
+    plt.title("Calibration curve for \n patient sex PadChest, cardiomegaly", fontsize=20)
     plt.xticks(fontsize=20)
     plt.yticks(fontsize=20)
-    plt.legend(fontsize=15)
+    plt.legend(fontsize=20)
     plt.savefig(config.FIGURES_DIR_PADCHEST_SEX / "calibration_curve_sex.png", bbox_inches='tight', dpi=300)
     #plt.close()
 
@@ -774,12 +774,12 @@ def calibration_curves_scanner_padchest_px():
     y_true = df_probas[df_probas["scanner"]=="ImagingDynamicsCompanyLtd"]["y_true"]
     y_proba = df_probas[df_probas["scanner"]=="ImagingDynamicsCompanyLtd"]["y_prob"]
     prob_true, prob_pred = calibration_curve(y_true, y_proba, n_bins=10)
-    plt.plot(prob_pred, prob_true,linestyle='dashed',marker='^',linewidth=1,label='MedCLIP, ImagingDynamicsCompanyLtd')
+    plt.plot(prob_pred, prob_true,linestyle='dashed',marker='^',linewidth=1,label='MedCLIP, IDC')
 
     y_true = df_probas[df_probas["scanner"]=="PhilipsMedicalSystems"]["y_true"]
     y_proba = df_probas[df_probas["scanner"]=="PhilipsMedicalSystems"]["y_prob"]
     prob_true, prob_pred = calibration_curve(y_true, y_proba, n_bins=10)
-    plt.plot(prob_pred, prob_true,linestyle='dashdot',marker='s',linewidth=1,label='MedCLIP, PhilipsMedicalSystems')
+    plt.plot(prob_pred, prob_true,linestyle='dashdot',marker='s',linewidth=1,label='MedCLIP, PMS')
     # else:
         # plt.plot(prob_pred,prob_true,linestyle='solid',marker='o',linewidth=1,color=colors[i],label=f'{models[model_name]}')
 
@@ -787,10 +787,10 @@ def calibration_curves_scanner_padchest_px():
     plt.grid(axis='y')
     plt.xlabel('Mean predicted probability',fontdict = {'fontsize' : 16})
     plt.ylabel('Fraction of positives',fontdict = {'fontsize' : 16})
-    plt.title("Calibration curve for scanner machines PadChest, pneumothorax", fontsize=20)
+    plt.title("Calibration curve for \n scanner machines PadChest, pneumothorax", fontsize=20)
     plt.xticks(fontsize=20)
     plt.yticks(fontsize=20)
-    plt.legend(fontsize=15)
+    plt.legend(fontsize=20)
     plt.savefig(config.FIGURES_DIR_PADCHEST_SCANNER_PX/ "calibration_curve_scanner.png", bbox_inches='tight', dpi=300)
     #plt.close()
 
@@ -830,10 +830,10 @@ def calibration_curves_sex_padchest_px():
     plt.grid(axis='y')
     plt.xlabel("Mean predicted probability",fontdict = {'fontsize' : 16})
     plt.ylabel("Fraction of positives",fontdict = {'fontsize' : 16})
-    plt.title("Calibration curve for patient sex PadChest, pneumothorax", fontsize=20)
+    plt.title("Calibration curve for \n patient sex PadChest, pneumothorax", fontsize=20)
     plt.xticks(fontsize=20)
     plt.yticks(fontsize=20)
-    plt.legend(fontsize=15)
+    plt.legend(fontsize=20)
     plt.savefig(config.FIGURES_DIR_PADCHEST_SEX_PX / "calibration_curve_sex.png", bbox_inches='tight', dpi=300)
     #plt.close()
 
