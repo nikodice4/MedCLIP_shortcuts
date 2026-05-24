@@ -1,5 +1,6 @@
 # resnet_probes.py: script consisting of our frozen MedCLIP ResNet-50 backbone with linear probes attached after each 
 # of the 16 bottleneck blocks via forward hooks, plus one final probe on the avgpool output.
+# https://medium.com/@heyamit10/pytorch-101-a-practical-guide-to-using-hooks-d64b625f0cc7
 
 import functools
 import torch
@@ -10,7 +11,7 @@ class LinearProbe(nn.Module):
     def __init__(self, in_features, num_classes=2): # Little classifier
         super().__init__()
         self.pool = nn.AdaptiveAvgPool2d(1)
-        self.fc   = nn.Linear(in_features, num_classes)
+        self.fc = nn.Linear(in_features, num_classes)
 
     def forward(self, x):
         if x.dim() == 4:
