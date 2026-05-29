@@ -4,7 +4,7 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-MedCLIP model trained on medical imaging data to uncover subgroups for robustness and fairness assessment
+MedCLIP model linear probes on medical imaging data to shortcuts for robustness and fairness assessment
 
 ## Project Organization
 
