@@ -222,8 +222,8 @@ MedCLIP model linear probes on medical imaging data to shortcuts for robustness 
 
 ## Install and run
 ```
-https://github.itu.dk/nizp/MedCLIP_subgroup/edit/master/README.md
-cd datamaps_2025fallresearch
+https://github.itu.dk/nizp/MedCLIP_shortcuts/edit/master/README.md
+cd MedCLIP_shortcuts
 ```
 
 ## Create the environment and install dependencies:
