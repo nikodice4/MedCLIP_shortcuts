@@ -161,10 +161,10 @@ def plot_confidence():
     conf_df["drain"] = df_pred["drain"]
 
     label_drain_data = {
-        "Pneumothorax positive, drain": {"y_true": 1, "drain": 1},
-        "Pneumothorax positive, no drain": {"y_true": 1, "drain": 0},
-        "Pneumothorax negative, drain": {"y_true": 0, "drain": 1},
-        "Pneumothorax negative, no drain": {"y_true": 0, "drain": 0},
+        "Positive, drain": {"y_true": 1, "drain": 1},
+        "Positive, no drain": {"y_true": 1, "drain": 0},
+        "Negative, drain": {"y_true": 0, "drain": 1},
+        "Negative, no drain": {"y_true": 0, "drain": 0},
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -336,10 +336,10 @@ def plot_confidence_padchest():
     conf_df["scanner"] = df_pred["scanner"]
 
     label_scanner_data = {
-        "Cardiomegaly positive, IDC": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
-        "Cardiomegaly positive, PMS": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
-        "Cardiomegaly negative, IDC": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
-        "Cardiomegaly negative, PMS": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
+        "Positive, IDC": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Positive, PMS": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
+        "Negative, IDC": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
+        "Negative, PMS": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -374,10 +374,10 @@ def plot_confidence_padchest():
     conf_df["sex"] = df_pred["sex"]
 
     label_sex_data = {
-        "Cardiomegaly positive, female": {"y_true": 1, "sex": "F"},
-        "Cardiomegaly positive, male": {"y_true": 1, "sex": "M"},
-        "Cardiomegaly negative, female": {"y_true": 0, "sex": "F"},
-        "Cardiomegaly negative, male": {"y_true": 0, "sex": "M"},
+        "Positive, female": {"y_true": 1, "sex": "F"},
+        "Positive, male": {"y_true": 1, "sex": "M"},
+        "Negative, female": {"y_true": 0, "sex": "F"},
+        "Negative, male": {"y_true": 0, "sex": "M"},
     }
 
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -682,7 +682,7 @@ def calibration_curves_scanner_padchest():
     y_proba = df_probas["y_prob"] # probability pneumothorax
     prob_true, prob_pred = calibration_curve(y_true, y_proba, n_bins=10)
     
-    # if subgroup:
+    # if subgroup:a
     plt.plot(prob_pred, prob_true,linestyle='solid',marker='o',linewidth=1,label='MedCLIP, all')
     
     y_true = df_probas[df_probas["scanner"]=="ImagingDynamicsCompanyLtd"]["y_true"]
@@ -837,21 +837,156 @@ def calibration_curves_sex_padchest_px():
     plt.savefig(config.FIGURES_DIR_PADCHEST_SEX_PX / "calibration_curve_sex.png", bbox_inches='tight', dpi=300)
     #plt.close()
 
+############################################# COMBINED 6-PANEL FIGURE #############################################
+
+def calibration_on_ax(ax, csv_path, subgroup_col, subgroup_specs, title):
+    df = pd.read_csv(csv_path)
+
+    # reference diagonal
+    ax.plot([0, 1], [0, 1], linestyle="dotted", label="Perfectly Calibrated")
+
+    # overall curve
+    prob_true, prob_pred = calibration_curve(df["y_true"], df["y_prob"], n_bins=10)
+    ax.plot(prob_pred, prob_true, linestyle="solid", marker="o", linewidth=1, label="MedCLIP, all")
+
+    # one curve per subgroup value
+    for value, label, ls, marker in subgroup_specs:
+        sub = df[df[subgroup_col] == value]
+        prob_true, prob_pred = calibration_curve(sub["y_true"], sub["y_prob"], n_bins=10)
+        ax.plot(prob_pred, prob_true, linestyle=ls, marker=marker, linewidth=1, label=label)
+
+    ax.grid(axis="y")
+    ax.set_xlabel("Mean predicted probability", fontsize=12)
+    ax.set_ylabel("Fraction of positives", fontsize=12)
+    ax.set_title(title, fontsize=13)
+    ax.legend(fontsize=18)
+
+
+def confidence_goldlabel_on_ax(ax, predictions_path, subgroup_col, label_specs, title):
+    """Draw a confidence curve split by gold label x subgroup (with bootstrap bands) onto a given Axes."""
+    df_pred = pd.read_csv(predictions_path)
+    layer_cols = sorted([c for c in df_pred.columns if c.startswith("layer_")],
+                        key=lambda c: int(c.split("_")[1]))
+    layers_x = [int(c.split("_")[1]) for c in layer_cols]
+
+    # Boland confidence: |p - 0.5|
+    conf_df = (df_pred[layer_cols] - 0.5).abs()
+    conf_df["y_true"] = df_pred["y_true"]
+    conf_df[subgroup_col] = df_pred[subgroup_col]
+
+    for label, filters in label_specs.items():
+        mask = (conf_df["y_true"] == filters["y_true"]) & (conf_df[subgroup_col] == filters[subgroup_col])
+        subset = conf_df[mask]
+        mean_per_layer = subset[layer_cols].mean()
+        line, = ax.plot(layers_x, mean_per_layer.values, label=f"{label} (n={len(subset)})", marker="o")
+        # bootstrap 95% band for this filtered subgroup
+        layers, mean, lo, hi = bootstrap_band(predictions_path, filters=filters)
+        ax.fill_between(layers, lo, hi, alpha=0.2, color=line.get_color())
+
+    ax.set_xlabel("Building block", fontsize=12)
+    ax.set_ylabel("Confidence", fontsize=12)
+    ax.set_title(title, fontsize=13)
+    ax.set_xticks(layers_x)
+    ax.grid(axis="y")
+    ax.set_ylim(0, 0.5)
+    ax.legend(fontsize=15)
+
+
+def plot_six_panel():
+    fig, axes = plt.subplots(3, 2, figsize=(16, 18))
+
+    # L1: calibration, NIH-CXR14 (pneumothorax), by drain status
+    calibration_on_ax(
+        axes[0, 0],
+        config.REPORTS_DIR_DRAIN / "calibration_drain.csv",
+        "drain",
+        [(1, "MedCLIP, only drain", "dashed", "^"),
+         (0, "MedCLIP, no drain", "dashdot", "s")],
+        "Calibration: NIH-CXR14 (pneumothorax) by drain status",
+    )
+
+    calibration_on_ax(
+        axes[1, 0],
+        config.REPORTS_DIR_PADCHEST_SCANNER / "calibration_scanner.csv",
+        "scanner",
+        [("ImagingDynamicsCompanyLtd", "MedCLIP, IDC", "dashed", "^"),
+         ("PhilipsMedicalSystems", "MedCLIP, PMS", "dashdot", "s")],
+        "Calibration: PadChest (cardiomegaly) by scanner",
+    )
+
+    # L3: confidence, PadChest (cardiomegaly), by scanner (gold label x scanner)
+    calibration_on_ax(
+        axes[2, 0],
+        config.REPORTS_DIR_PADCHEST_SCANNER_PX / "calibration_scanner.csv",
+        "scanner",
+        [("ImagingDynamicsCompanyLtd", "MedCLIP, IDC", "dashed", "^"),
+         ("PhilipsMedicalSystems", "MedCLIP, PMS", "dashdot", "s")],
+        "Calibration: PadChest (pneumothorax) by scanner",
+    )
+
+    # ----- RIGHT COLUMN -----
+    # R1: confidence, NIH-CXR14 (pneumothorax), by drain status (gold label x drain)
+    confidence_goldlabel_on_ax(
+        axes[0, 1],
+        config.REPORTS_DIR_LAYER / "predictions_per_layer_test.csv",
+        "drain",
+        {
+            "Positive, drain": {"y_true": 1, "drain": 1},
+            "Positive, no drain": {"y_true": 1, "drain": 0},
+            "Negative, drain": {"y_true": 0, "drain": 1},
+            "Negative, no drain": {"y_true": 0, "drain": 0},
+        },
+        "Confidence: NIH-CXR14 (pneumothorax) by drain status",
+    )
+
+    # R2: confidence, PadChest (cardiomegaly), by scanner (gold label x scanner)
+    confidence_goldlabel_on_ax(
+        axes[1, 1],
+        config.REPORTS_DIR_PADCHEST_LAYER / "predictions_per_layer_test.csv",
+        "scanner",
+        {
+            "Positive, IDC": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
+            "Positive, PMS": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
+            "Negative, IDC": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
+            "Negative, PMS": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
+        },
+        "Confidence: PadChest (cardiomegaly) by scanner",
+    )
+
+    # R3: confidence, PadChest (pneumothorax), by scanner (gold label x scanner)
+    confidence_goldlabel_on_ax(
+        axes[2, 1],
+        config.REPORTS_DIR_PADCHEST_LAYER_PX / "predictions_per_layer_test.csv",
+        "scanner",
+        {
+            "Positive, IDC": {"y_true": 1, "scanner": "ImagingDynamicsCompanyLtd"},
+            "Positive, PMS": {"y_true": 1, "scanner": "PhilipsMedicalSystems"},
+            "Negative, IDC": {"y_true": 0, "scanner": "ImagingDynamicsCompanyLtd"},
+            "Negative, PMS": {"y_true": 0, "scanner": "PhilipsMedicalSystems"},
+        },
+        "Confidence: PadChest (pneumothorax) by scanner",
+    )
+
+    fig.tight_layout()
+    out_path = config.FIGURES_DIR / "combined_six_panel.png"
+    plt.savefig(out_path, dpi=300, bbox_inches="tight")
+    print(f"saved combined 6-panel figure -> {out_path}")
 
 if __name__ == "__main__":
     # plotting all confidence curves for all datasets
-    plot_confidence()
-    plot_confidence_padchest()
-    plot_confidence_padchest_px()
+    plot_six_panel()
+    #plot_confidence()
+    #plot_confidence_padchest()
+    #plot_confidence_padchest_px()
     
     # calibration curves for chestx
-    calibration_curves_drains()
-    calibration_curves_sex()
+    #calibration_curves_drains()
+    #calibration_curves_sex()
 
     # calibration curves for padchest (cardiomegaly)
-    calibration_curves_scanner_padchest()
-    calibration_curves_sex_padchest()
+    #calibration_curves_scanner_padchest()
+    #calibration_curves_sex_padchest()
 
     # calibration curves for padchest (pneumothorax)
-    calibration_curves_scanner_padchest_px()
-    calibration_curves_sex_padchest_px()
+    #calibration_curves_scanner_padchest_px()
+    #calibration_curves_sex_padchest_px()
