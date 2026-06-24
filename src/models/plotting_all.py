@@ -893,8 +893,8 @@ def confidence_goldlabel_on_ax(ax, predictions_path, subgroup_col, label_specs, 
 
 
 def plot_six_panel():
-    fig, axes = plt.subplots(3, 2, figsize=(16, 18))
-
+    # fig, axes = plt.subplots(3, 2, figsize=(16, 18))
+    fig, axes = plt.subplots(4, 2, figsize=(16, 24))
     # L1: calibration, NIH-CXR14 (pneumothorax), by drain status
     calibration_on_ax(
         axes[0, 0],
@@ -966,15 +966,61 @@ def plot_six_panel():
         },
         "Confidence: PadChest (pneumothorax) by scanner",
     )
+    calibration_on_ax(
+        axes[3, 0],
+        config.REPORTS_DIR_PADCHEST_SEX_PX / "calibration_sex.csv",
+        "sex",
+        [("F", "MedCLIP, Female patients", "dashed", "^"),
+         ("M", "MedCLIP, Male patients", "dashdot", "s")],
+        "Calibration: PadChest (pneumothorax) by patient sex")
+    
+    confidence_goldlabel_on_ax(
+        axes[3, 1],
+        config.REPORTS_DIR_PADCHEST_LAYER_PX / "predictions_per_layer_test.csv",
+        "sex",
+        {"Positive, female": {"y_true": 1, "sex": "F"},
+        "Positive, male":   {"y_true": 1, "sex": "M"},
+        "Negative, female": {"y_true": 0, "sex": "F"},
+        "Negative, male":   {"y_true": 0, "sex": "M"}},
+        "Confidence: PadChest (pneumothorax) by patient sex")
 
     fig.tight_layout()
     out_path = config.FIGURES_DIR / "combined_six_panel.png"
     plt.savefig(out_path, dpi=300, bbox_inches="tight")
     print(f"saved combined 6-panel figure -> {out_path}")
 
+
+def plot_sex_panel():
+    config.FIGURES_DIR_PADCHEST_SEX_PX.mkdir(parents=True, exist_ok=True)
+    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+
+    calibration_on_ax(
+        axes[0],
+        config.REPORTS_DIR_PADCHEST_SEX_PX / "calibration_sex.csv",
+        "sex",
+        [("F", "MedCLIP, Female patients", "dashed", "^"),
+         ("M", "MedCLIP, Male patients", "dashdot", "s")],
+        "Calibration: PadChest (pneumothorax) by patient sex")
+    
+    confidence_goldlabel_on_ax(
+        axes[1],
+        config.REPORTS_DIR_PADCHEST_LAYER_PX / "predictions_per_layer_test.csv",
+        "sex",
+        {"Positive, female": {"y_true": 1, "sex": "F"},
+        "Positive, male":   {"y_true": 1, "sex": "M"},
+        "Negative, female": {"y_true": 0, "sex": "F"},
+        "Negative, male":   {"y_true": 0, "sex": "M"}},
+        "Confidence: PadChest (pneumothorax) by patient sex")
+
+    fig.tight_layout()
+    out_path = config.FIGURES_DIR_PADCHEST_SEX_PX / "two_panel_padchest_px_sex.png"
+    plt.savefig(out_path, dpi=300, bbox_inches="tight")
+    print(f"saved two-panel padchest px sex -> {out_path}")
+
 if __name__ == "__main__":
     # plotting all confidence curves for all datasets
     plot_six_panel()
+    # plot_sex_panel()
     #plot_confidence()
     #plot_confidence_padchest()
     #plot_confidence_padchest_px()
