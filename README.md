@@ -6,7 +6,7 @@
 
 MedCLIP model linear probes on medical imaging data to shortcuts for robustness and fairness assessment
 
-## Project Organization
+## Project organisation
 
 ```              
 ├── data               <- Data folder is in git.ignore
@@ -272,3 +272,9 @@ metric_notebook.ipynb
 Go to confidence_images for each of the datasets
 
 ```
+
+## Dataset availability
+All datasets used are publicly available:
+* NIH-CXR14: https://www.kaggle.com/datasets/nih-chest-xrays/data
+* PadChest: http://bimcv.cipf.es/bimcv-projects/padchest/
+* NEATX: https://zenodo.org/records/14944064
